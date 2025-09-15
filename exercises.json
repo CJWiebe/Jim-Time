@@ -1,0 +1,1005 @@
+{
+  "Pull-ups (Standard)": {
+    "muscleGroup": "Back",
+    "isBodyweight": true,
+    "equipment": "Pull-up bar (fixed or adjustable)",
+    "description": "Hang from bar with overhand grip, pull body up until chin clears bar, lower with control",
+    "difficulty": "intermediate",
+    "alternativeNames": ["Pull-ups", "Pullups"]
+  },
+  "Wide Grip Pull-up": {
+    "muscleGroup": "Back",
+    "isBodyweight": true,
+    "equipment": "Pull-up bar with wide grip positions",
+    "description": "Pull-ups with hands positioned wider than shoulders to target outer lats",
+    "difficulty": "intermediate",
+    "alternativeNames": ["Wide Grip Pullups"]
+  },
+  "Chin-up": {
+    "muscleGroup": "Back",
+    "isBodyweight": true,
+    "equipment": "Pull-up bar (underhand grip)",
+    "description": "Pull-ups with underhand grip, engages biceps more than standard pull-ups",
+    "difficulty": "intermediate",
+    "alternativeNames": ["Chin-ups", "Chinups"]
+  },
+  "Neutral Grip Pull-up": {
+    "muscleGroup": "Back",
+    "isBodyweight": true,
+    "equipment": "Pull-up bar with parallel handles",
+    "description": "Pull-ups with neutral (palms facing each other) grip",
+    "difficulty": "intermediate"
+  },
+  "Wide Grip Lat Pulldown": {
+    "muscleGroup": "Back",
+    "isBodyweight": false,
+    "equipment": "Cable machine with wide lat pulldown bar attachment",
+    "description": "Seated pulldown targeting outer lats with wide grip",
+    "difficulty": "beginner"
+  },
+  "Close Grip Lat Pulldown": {
+    "muscleGroup": "Back",
+    "isBodyweight": false,
+    "equipment": "Cable machine with V-handle attachment",
+    "description": "Lat pulldown with narrow grip targeting inner lats and rhomboids",
+    "difficulty": "beginner"
+  },
+  "Reverse Grip Lat Pulldown": {
+    "muscleGroup": "Back",
+    "isBodyweight": false,
+    "equipment": "Cable machine with straight bar (underhand)",
+    "description": "Underhand lat pulldown emphasizing biceps and lower lats",
+    "difficulty": "beginner"
+  },
+  "Single Arm Lat Pulldown": {
+    "muscleGroup": "Back",
+    "isBodyweight": false,
+    "equipment": "Cable machine with D-handle attachment",
+    "description": "Unilateral lat pulldown for addressing imbalances",
+    "difficulty": "intermediate"
+  },
+  "Straight Arm Lat Pulldown": {
+    "muscleGroup": "Back",
+    "isBodyweight": false,
+    "equipment": "Cable machine with straight bar or rope attachment",
+    "description": "Lat isolation with straight arms, targets lats without bicep involvement",
+    "difficulty": "intermediate"
+  },
+  "Barbell Bent-Over Row": {
+    "muscleGroup": "Back",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell (45 lbs), weight plates, collars",
+    "description": "Bent-over rowing motion targeting lats, rhomboids, and middle traps",
+    "difficulty": "intermediate",
+    "alternativeNames": ["Barbell Rows", "Bent Over Rows"]
+  },
+  "Pendlay Row": {
+    "muscleGroup": "Back",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell, weight plates from floor position",
+    "description": "Strict rowing motion starting from floor each rep",
+    "difficulty": "advanced"
+  },
+  "Single Arm Dumbbell Row": {
+    "muscleGroup": "Back",
+    "isBodyweight": false,
+    "equipment": "Dumbbells, flat bench for support",
+    "description": "Unilateral rowing with dumbbell and bench support",
+    "difficulty": "beginner"
+  },
+  "Chest-Supported Dumbbell Row": {
+    "muscleGroup": "Back",
+    "isBodyweight": false,
+    "equipment": "Dumbbells, incline bench (30-45°)",
+    "description": "Dumbbell rows with chest support to reduce lower back stress",
+    "difficulty": "beginner"
+  },
+  "Seated Cable Row": {
+    "muscleGroup": "Back",
+    "isBodyweight": false,
+    "equipment": "Cable machine with V-handle or straight bar",
+    "description": "Seated rowing motion targeting lats and rhomboids",
+    "difficulty": "beginner",
+    "alternativeNames": ["Cable Rows"]
+  },
+  "Single Arm Cable Row": {
+    "muscleGroup": "Back",
+    "isBodyweight": false,
+    "equipment": "Cable machine with D-handle attachment",
+    "description": "Unilateral cable rowing for balanced development",
+    "difficulty": "beginner"
+  },
+  "T-Bar Row": {
+    "muscleGroup": "Back",
+    "isBodyweight": false,
+    "equipment": "T-bar machine with V-handle OR landmine setup",
+    "description": "T-bar rowing targeting upper back thickness",
+    "difficulty": "intermediate"
+  },
+  "Cable High Row": {
+    "muscleGroup": "Back",
+    "isBodyweight": false,
+    "equipment": "Cable machine at chest height with rope attachment",
+    "description": "High cable rows targeting rhomboids and rear delts",
+    "difficulty": "beginner"
+  },
+  "Conventional Deadlift": {
+    "muscleGroup": "Back",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell, weight plates, collars",
+    "description": "Hip hinge movement lifting barbell from floor to standing position",
+    "difficulty": "advanced",
+    "alternativeNames": ["Deadlifts", "Deadlift"]
+  },
+  "Sumo Deadlift": {
+    "muscleGroup": "Glutes",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell, weight plates, wide stance",
+    "description": "Deadlift with wide stance emphasizing glutes and inner thighs",
+    "difficulty": "advanced"
+  },
+  "Romanian Deadlift": {
+    "muscleGroup": "Hamstrings",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell or dumbbells",
+    "description": "Hip hinge movement focusing on hamstring and glute development",
+    "difficulty": "intermediate",
+    "alternativeNames": ["RDL", "Romanian Deadlifts"]
+  },
+  "Stiff Leg Deadlift": {
+    "muscleGroup": "Hamstrings",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell, weight plates",
+    "description": "Deadlift variation with minimal knee bend, targets hamstrings",
+    "difficulty": "intermediate"
+  },
+  "Barbell Shrugs": {
+    "muscleGroup": "Back",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell, weight plates",
+    "description": "Shoulder elevation targeting upper trapezius",
+    "difficulty": "beginner"
+  },
+  "Dumbbell Shrugs": {
+    "muscleGroup": "Back",
+    "isBodyweight": false,
+    "equipment": "Pair of dumbbells",
+    "description": "Shrugs with dumbbells allowing natural movement pattern",
+    "difficulty": "beginner"
+  },
+  "Cable Shrugs": {
+    "muscleGroup": "Back",
+    "isBodyweight": false,
+    "equipment": "Cable machine with straight bar or dual D-handles",
+    "description": "Cable shrugs providing constant tension on traps",
+    "difficulty": "beginner"
+  },
+  "Face Pulls": {
+    "muscleGroup": "Rear Delts",
+    "isBodyweight": false,
+    "equipment": "Cable machine at face height with rope attachment",
+    "description": "Cable pulls to face targeting rear delts and external rotators",
+    "difficulty": "beginner"
+  },
+  "Back Extensions": {
+    "muscleGroup": "Back",
+    "isBodyweight": true,
+    "equipment": "45° or 90° back extension machine/Roman chair",
+    "description": "Hip hinge movement targeting erector spinae and glutes",
+    "difficulty": "beginner",
+    "alternativeNames": ["Hyperextensions"]
+  },
+  "Reverse Hyperextensions": {
+    "muscleGroup": "Glutes",
+    "isBodyweight": true,
+    "equipment": "Reverse hyperextension machine",
+    "description": "Leg extension movement targeting glutes and hamstrings",
+    "difficulty": "intermediate"
+  },
+  "Flat Barbell Bench Press": {
+    "muscleGroup": "Chest",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell, flat bench with rack, weight plates",
+    "description": "Primary chest exercise pressing barbell from chest to lockout",
+    "difficulty": "beginner",
+    "alternativeNames": ["Bench Press", "Barbell Bench Press"]
+  },
+  "Incline Barbell Bench Press": {
+    "muscleGroup": "Chest",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell, incline bench (30-45°) with rack",
+    "description": "Incline press targeting upper chest development",
+    "difficulty": "intermediate",
+    "alternativeNames": ["Incline Bench Press"]
+  },
+  "Decline Barbell Bench Press": {
+    "muscleGroup": "Chest",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell, decline bench (15-30°) with ankle supports",
+    "description": "Decline press emphasizing lower chest fibers",
+    "difficulty": "intermediate",
+    "alternativeNames": ["Decline Bench Press"]
+  },
+  "Flat Dumbbell Bench Press": {
+    "muscleGroup": "Chest",
+    "isBodyweight": false,
+    "equipment": "Dumbbells, flat bench",
+    "description": "Dumbbell press allowing greater range of motion",
+    "difficulty": "beginner",
+    "alternativeNames": ["Dumbbell Bench Press"]
+  },
+  "Incline Dumbbell Bench Press": {
+    "muscleGroup": "Chest",
+    "isBodyweight": false,
+    "equipment": "Dumbbells, adjustable incline bench (30-45°)",
+    "description": "Incline dumbbell press for upper chest isolation",
+    "difficulty": "beginner",
+    "alternativeNames": ["Incline Dumbbell Press"]
+  },
+  "Decline Dumbbell Bench Press": {
+    "muscleGroup": "Chest",
+    "isBodyweight": false,
+    "equipment": "Dumbbells, decline bench with ankle supports",
+    "description": "Decline dumbbell press targeting lower chest",
+    "difficulty": "intermediate"
+  },
+  "Close-Grip Bench Press": {
+    "muscleGroup": "Triceps",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell, flat bench, narrow grip",
+    "description": "Bench press with narrow grip emphasizing triceps",
+    "difficulty": "intermediate"
+  },
+  "Dumbbell Flyes (Flat)": {
+    "muscleGroup": "Chest",
+    "isBodyweight": false,
+    "equipment": "Dumbbells, flat bench",
+    "description": "Chest isolation with arc motion using dumbbells",
+    "difficulty": "beginner",
+    "alternativeNames": ["Dumbbell Flyes", "DB Flyes"]
+  },
+  "Incline Dumbbell Flyes": {
+    "muscleGroup": "Chest",
+    "isBodyweight": false,
+    "equipment": "Dumbbells, incline bench (30-45°)",
+    "description": "Incline flyes targeting upper chest isolation",
+    "difficulty": "beginner"
+  },
+  "Cable Flyes (Flat)": {
+    "muscleGroup": "Chest",
+    "isBodyweight": false,
+    "equipment": "Dual cable machine at chest height with D-handles, flat bench",
+    "description": "Cable chest flyes with constant tension",
+    "difficulty": "beginner"
+  },
+  "Incline Cable Flyes": {
+    "muscleGroup": "Chest",
+    "isBodyweight": false,
+    "equipment": "Dual cable machine set low with D-handles, incline bench",
+    "description": "Cable flyes from low to high targeting upper chest",
+    "difficulty": "beginner"
+  },
+  "Decline Cable Flyes": {
+    "muscleGroup": "Chest",
+    "isBodyweight": false,
+    "equipment": "Dual cable machine set high with D-handles",
+    "description": "Cable flyes from high to low targeting lower chest",
+    "difficulty": "beginner"
+  },
+  "Pec Deck Machine": {
+    "muscleGroup": "Chest",
+    "isBodyweight": false,
+    "equipment": "Pec deck machine with adjustable seat",
+    "description": "Machine fly movement isolating pectoral muscles",
+    "difficulty": "beginner",
+    "alternativeNames": ["Pec Deck"]
+  },
+  "Parallel Bar Dips": {
+    "muscleGroup": "Chest",
+    "isBodyweight": true,
+    "equipment": "Parallel dip bars or dip station",
+    "description": "Bodyweight dips targeting lower chest and triceps",
+    "difficulty": "intermediate",
+    "alternativeNames": ["Dips", "Chest Dips"]
+  },
+  "Wide Grip Dips": {
+    "muscleGroup": "Chest",
+    "isBodyweight": true,
+    "equipment": "Adjustable width dip bars",
+    "description": "Dips with wider hand position emphasizing chest",
+    "difficulty": "intermediate"
+  },
+  "Ring Dips": {
+    "muscleGroup": "Chest",
+    "isBodyweight": true,
+    "equipment": "Gymnastics rings with adjustable straps",
+    "description": "Dips on rings requiring additional core stability",
+    "difficulty": "advanced"
+  },
+  "Standard Push-ups": {
+    "muscleGroup": "Chest",
+    "isBodyweight": true,
+    "equipment": "None (floor/mat optional)",
+    "description": "Basic bodyweight pushing exercise",
+    "difficulty": "beginner",
+    "alternativeNames": ["Push-ups", "Push ups", "Pushups"]
+  },
+  "Wide Grip Push-ups": {
+    "muscleGroup": "Chest",
+    "isBodyweight": true,
+    "equipment": "None required",
+    "description": "Push-ups with hands positioned wider than shoulders",
+    "difficulty": "beginner"
+  },
+  "Diamond Push-ups": {
+    "muscleGroup": "Triceps",
+    "isBodyweight": true,
+    "equipment": "None required",
+    "description": "Push-ups with hands forming diamond shape, targets triceps",
+    "difficulty": "intermediate"
+  },
+  "Decline Push-ups": {
+    "muscleGroup": "Chest",
+    "isBodyweight": true,
+    "equipment": "Bench or elevated platform for feet",
+    "description": "Push-ups with feet elevated, targets upper chest",
+    "difficulty": "intermediate"
+  },
+  "Incline Push-ups": {
+    "muscleGroup": "Chest",
+    "isBodyweight": true,
+    "equipment": "Bench or wall for hand placement",
+    "description": "Push-ups with hands elevated, beginner-friendly variation",
+    "difficulty": "beginner"
+  },
+  "Cable Crossovers (High to Low)": {
+    "muscleGroup": "Chest",
+    "isBodyweight": false,
+    "equipment": "Dual cable machine set high with D-handles",
+    "description": "Cable crossovers targeting lower chest fibers",
+    "difficulty": "beginner"
+  },
+  "Cable Crossovers (Low to High)": {
+    "muscleGroup": "Chest",
+    "isBodyweight": false,
+    "equipment": "Dual cable machine set low with D-handles",
+    "description": "Cable crossovers targeting upper chest fibers",
+    "difficulty": "beginner"
+  },
+  "Cable Crossovers (Mid-Level)": {
+    "muscleGroup": "Chest",
+    "isBodyweight": false,
+    "equipment": "Dual cable machine at chest height with D-handles",
+    "description": "Cable crossovers targeting middle chest fibers",
+    "difficulty": "beginner"
+  },
+  "Single Arm Cable Crossover": {
+    "muscleGroup": "Chest",
+    "isBodyweight": false,
+    "equipment": "Single cable machine with D-handle",
+    "description": "Unilateral cable crossover for chest isolation",
+    "difficulty": "beginner"
+  },
+  "Dumbbell Pullover": {
+    "muscleGroup": "Chest",
+    "isBodyweight": false,
+    "equipment": "Single dumbbell, flat bench",
+    "description": "Pullover motion targeting chest and serratus anterior",
+    "difficulty": "intermediate"
+  },
+  "Cable Pullover": {
+    "muscleGroup": "Chest",
+    "isBodyweight": false,
+    "equipment": "Cable machine set high with rope or straight bar",
+    "description": "Cable pullover targeting chest and lats",
+    "difficulty": "intermediate"
+  },
+  "Military Press": {
+    "muscleGroup": "Shoulders",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell, squat rack with safety bars",
+    "description": "Strict overhead press with feet together",
+    "difficulty": "intermediate",
+    "alternativeNames": ["Overhead Press"]
+  },
+  "Seated Barbell Press": {
+    "muscleGroup": "Shoulders",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell, 90° bench, squat rack",
+    "description": "Seated overhead press for shoulder development",
+    "difficulty": "intermediate"
+  },
+  "Dumbbell Shoulder Press (Seated)": {
+    "muscleGroup": "Shoulders",
+    "isBodyweight": false,
+    "equipment": "Dumbbells, 90° adjustable bench",
+    "description": "Seated dumbbell press with back support",
+    "difficulty": "beginner",
+    "alternativeNames": ["Seated Dumbbell Press"]
+  },
+  "Dumbbell Shoulder Press (Standing)": {
+    "muscleGroup": "Shoulders",
+    "isBodyweight": false,
+    "equipment": "Dumbbells only",
+    "description": "Standing dumbbell press engaging core for stability",
+    "difficulty": "beginner",
+    "alternativeNames": ["Standing Dumbbell Press"]
+  },
+  "Arnold Press": {
+    "muscleGroup": "Shoulders",
+    "isBodyweight": false,
+    "equipment": "Dumbbells, optional bench",
+    "description": "Rotating dumbbell press targeting all deltoid heads",
+    "difficulty": "intermediate"
+  },
+  "Push Press": {
+    "muscleGroup": "Shoulders",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell with leg drive momentum",
+    "description": "Overhead press with slight leg drive assistance",
+    "difficulty": "advanced"
+  },
+  "Dumbbell Lateral Raise": {
+    "muscleGroup": "Shoulders",
+    "isBodyweight": false,
+    "equipment": "Light to moderate dumbbells",
+    "description": "Side raises targeting medial deltoids",
+    "difficulty": "beginner",
+    "alternativeNames": ["Lateral Raises", "Side Raises"]
+  },
+  "Cable Lateral Raise": {
+    "muscleGroup": "Shoulders",
+    "isBodyweight": false,
+    "equipment": "Cable machine with D-handle, lowest position",
+    "description": "Cable lateral raises with constant tension",
+    "difficulty": "beginner"
+  },
+  "Leaning Cable Lateral Raise": {
+    "muscleGroup": "Shoulders",
+    "isBodyweight": false,
+    "equipment": "Cable machine with D-handle, support anchor",
+    "description": "Lateral raises while leaning for increased range",
+    "difficulty": "intermediate"
+  },
+  "Machine Lateral Raise": {
+    "muscleGroup": "Shoulders",
+    "isBodyweight": false,
+    "equipment": "Lateral raise machine with arm pads",
+    "description": "Machine lateral raises for controlled movement",
+    "difficulty": "beginner"
+  },
+  "Barbell Front Raise": {
+    "muscleGroup": "Shoulders",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell or EZ-curl bar",
+    "description": "Front raises with barbell targeting anterior delts",
+    "difficulty": "beginner",
+    "alternativeNames": ["Front Raises"]
+  },
+  "Dumbbell Front Raise": {
+    "muscleGroup": "Shoulders",
+    "isBodyweight": false,
+    "equipment": "Dumbbells (alternating or simultaneous)",
+    "description": "Front raises with dumbbells for anterior deltoid isolation",
+    "difficulty": "beginner"
+  },
+  "Cable Front Raise": {
+    "muscleGroup": "Shoulders",
+    "isBodyweight": false,
+    "equipment": "Cable machine with straight bar or D-handle, lowest position",
+    "description": "Cable front raises with constant tension",
+    "difficulty": "beginner"
+  },
+  "Bent-Over Rear Delt Fly": {
+    "muscleGroup": "Rear Delts",
+    "isBodyweight": false,
+    "equipment": "Dumbbells, optional chest support bench",
+    "description": "Bent-over flyes targeting posterior deltoids",
+    "difficulty": "beginner",
+    "alternativeNames": ["Rear Delt Flyes"]
+  },
+  "Cable Rear Delt Fly": {
+    "muscleGroup": "Rear Delts",
+    "isBodyweight": false,
+    "equipment": "Cable machine with D-handle at head height",
+    "description": "Cable flyes targeting rear deltoids",
+    "difficulty": "beginner"
+  },
+  "Reverse Pec Deck": {
+    "muscleGroup": "Rear Delts",
+    "isBodyweight": false,
+    "equipment": "Pec deck machine in reverse position",
+    "description": "Machine reverse fly for rear deltoid isolation",
+    "difficulty": "beginner"
+  },
+  "Upright Row": {
+    "muscleGroup": "Shoulders",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell, EZ-bar, or dumbbells",
+    "description": "Upright rowing motion targeting delts and traps",
+    "difficulty": "intermediate",
+    "alternativeNames": ["Upright Rows"]
+  },
+  "Barbell Curls": {
+    "muscleGroup": "Biceps",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell, weight plates",
+    "description": "Standing barbell curls for bicep mass development",
+    "difficulty": "beginner"
+  },
+  "EZ-Bar Curls": {
+    "muscleGroup": "Biceps",
+    "isBodyweight": false,
+    "equipment": "EZ-curl bar, weight plates",
+    "description": "Curls with angled bar reducing wrist strain",
+    "difficulty": "beginner"
+  },
+  "Preacher Curls": {
+    "muscleGroup": "Biceps",
+    "isBodyweight": false,
+    "equipment": "Preacher bench, EZ-bar or dumbbells",
+    "description": "Bicep curls with arm support isolating biceps",
+    "difficulty": "beginner"
+  },
+  "Hammer Curls": {
+    "muscleGroup": "Biceps",
+    "isBodyweight": false,
+    "equipment": "Dumbbells with neutral grip",
+    "description": "Neutral grip curls targeting biceps and brachialis",
+    "difficulty": "beginner"
+  },
+  "Incline Dumbbell Curls": {
+    "muscleGroup": "Biceps",
+    "isBodyweight": false,
+    "equipment": "Dumbbells, incline bench (45-60°)",
+    "description": "Incline curls targeting long head of biceps",
+    "difficulty": "beginner"
+  },
+  "Concentration Curls": {
+    "muscleGroup": "Biceps",
+    "isBodyweight": false,
+    "equipment": "Single dumbbell, flat bench",
+    "description": "Isolated single-arm bicep curls with strict form",
+    "difficulty": "beginner"
+  },
+  "Cable Curls (Straight Bar)": {
+    "muscleGroup": "Biceps",
+    "isBodyweight": false,
+    "equipment": "Cable machine with straight bar, lowest position",
+    "description": "Cable curls with constant tension throughout range",
+    "difficulty": "beginner"
+  },
+  "Cable Curls (Rope)": {
+    "muscleGroup": "Biceps",
+    "isBodyweight": false,
+    "equipment": "Cable machine with rope attachment, lowest position",
+    "description": "Cable curls with rope allowing wrist rotation",
+    "difficulty": "beginner"
+  },
+  "Single-Arm Cable Curls": {
+    "muscleGroup": "Biceps",
+    "isBodyweight": false,
+    "equipment": "Cable machine with D-handle, lowest position",
+    "description": "Unilateral cable curls for balanced development",
+    "difficulty": "beginner"
+  },
+  "Tricep Pushdowns (Straight Bar)": {
+    "muscleGroup": "Triceps",
+    "isBodyweight": false,
+    "equipment": "Cable machine with straight bar, highest position",
+    "description": "Cable pushdowns targeting all three tricep heads",
+    "difficulty": "beginner",
+    "alternativeNames": ["Tricep Pushdowns"]
+  },
+  "Tricep Pushdowns (Rope)": {
+    "muscleGroup": "Triceps",
+    "isBodyweight": false,
+    "equipment": "Cable machine with rope attachment, highest position",
+    "description": "Rope pushdowns allowing wrist separation at bottom",
+    "difficulty": "beginner"
+  },
+  "Tricep Pushdowns (V-Bar)": {
+    "muscleGroup": "Triceps",
+    "isBodyweight": false,
+    "equipment": "Cable machine with V-bar attachment, highest position",
+    "description": "V-bar pushdowns for tricep isolation",
+    "difficulty": "beginner"
+  },
+  "Overhead Cable Extension": {
+    "muscleGroup": "Triceps",
+    "isBodyweight": false,
+    "equipment": "Cable machine with rope, lowest position",
+    "description": "Overhead extension targeting tricep long head",
+    "difficulty": "beginner"
+  },
+  "Skull Crushers": {
+    "muscleGroup": "Triceps",
+    "isBodyweight": false,
+    "equipment": "EZ-curl bar, flat bench",
+    "description": "Lying tricep extensions isolating triceps",
+    "difficulty": "intermediate"
+  },
+  "Seated Dumbbell Extension": {
+    "muscleGroup": "Triceps",
+    "isBodyweight": false,
+    "equipment": "Single dumbbell, 90° bench",
+    "description": "Overhead extension with dumbbell targeting long head",
+    "difficulty": "beginner"
+  },
+  "Tricep Dips": {
+    "muscleGroup": "Triceps",
+    "isBodyweight": true,
+    "equipment": "Parallel dip bars",
+    "description": "Bodyweight dips emphasizing tricep development",
+    "difficulty": "intermediate"
+  },
+  "Tricep Kickbacks": {
+    "muscleGroup": "Triceps",
+    "isBodyweight": false,
+    "equipment": "Dumbbells, flat bench for support",
+    "description": "Bent-over tricep extensions with dumbbells",
+    "difficulty": "beginner"
+  },
+  "Wrist Curls (Palms Up)": {
+    "muscleGroup": "Biceps",
+    "isBodyweight": false,
+    "equipment": "Dumbbells or barbell, bench",
+    "description": "Wrist flexion exercise targeting forearm flexors",
+    "difficulty": "beginner"
+  },
+  "Reverse Wrist Curls": {
+    "muscleGroup": "Biceps",
+    "isBodyweight": false,
+    "equipment": "Dumbbells or barbell, bench",
+    "description": "Wrist extension targeting forearm extensors",
+    "difficulty": "beginner"
+  },
+  "Farmer's Walk": {
+    "muscleGroup": "Back",
+    "isBodyweight": false,
+    "equipment": "Heavy dumbbells or farmer's walk handles",
+    "description": "Loaded carry exercise for grip and core strength",
+    "difficulty": "intermediate"
+  },
+  "Reverse Curls (Barbell)": {
+    "muscleGroup": "Biceps",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell or EZ-bar with overhand grip",
+    "description": "Overhand curls targeting brachioradialis",
+    "difficulty": "beginner"
+  },
+  "Reverse Curls (Dumbbell)": {
+    "muscleGroup": "Biceps",
+    "isBodyweight": false,
+    "equipment": "Dumbbells with overhand grip",
+    "description": "Dumbbell reverse curls for forearm development",
+    "difficulty": "beginner"
+  },
+  "Back Squat": {
+    "muscleGroup": "Quads",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell, squat rack with safety bars, weight plates",
+    "description": "Primary leg exercise with barbell on upper back",
+    "difficulty": "intermediate",
+    "alternativeNames": ["Squats", "Barbell Squats"]
+  },
+  "Front Squat": {
+    "muscleGroup": "Quads",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell, squat rack, front rack position",
+    "description": "Squats with barbell held in front, emphasizes quads",
+    "difficulty": "advanced"
+  },
+  "Goblet Squat": {
+    "muscleGroup": "Quads",
+    "isBodyweight": false,
+    "equipment": "Single dumbbell or kettlebell held at chest",
+    "description": "Squats holding weight at chest, beginner-friendly",
+    "difficulty": "beginner"
+  },
+  "Bulgarian Split Squat": {
+    "muscleGroup": "Quads",
+    "isBodyweight": false,
+    "equipment": "Bench (12-18\"), optional dumbbells",
+    "description": "Single-leg squats with rear foot elevated",
+    "difficulty": "intermediate"
+  },
+  "Hack Squat": {
+    "muscleGroup": "Quads",
+    "isBodyweight": false,
+    "equipment": "Hack squat machine with 45° sled, weight plates",
+    "description": "Machine squat with angled back support",
+    "difficulty": "beginner"
+  },
+  "Wall Sits": {
+    "muscleGroup": "Quads",
+    "isBodyweight": true,
+    "equipment": "Smooth wall surface only",
+    "description": "Isometric squat hold against wall",
+    "difficulty": "beginner"
+  },
+  "Walking Lunges": {
+    "muscleGroup": "Quads",
+    "isBodyweight": false,
+    "equipment": "Optional dumbbells",
+    "description": "Forward stepping lunges targeting quads and glutes",
+    "difficulty": "beginner"
+  },
+  "Reverse Lunges": {
+    "muscleGroup": "Quads",
+    "isBodyweight": false,
+    "equipment": "Optional dumbbells",
+    "description": "Backward stepping lunges, knee-friendly variation",
+    "difficulty": "beginner"
+  },
+  "Lateral Lunges": {
+    "muscleGroup": "Quads",
+    "isBodyweight": false,
+    "equipment": "Optional dumbbells",
+    "description": "Side lunges targeting adductors and outer quads",
+    "difficulty": "beginner"
+  },
+  "Leg Press": {
+    "muscleGroup": "Quads",
+    "isBodyweight": false,
+    "equipment": "Leg press machine (45° or horizontal), weight plates",
+    "description": "Machine-based quad and glute exercise",
+    "difficulty": "beginner"
+  },
+  "Leg Extensions": {
+    "muscleGroup": "Quads",
+    "isBodyweight": false,
+    "equipment": "Leg extension machine with adjustable pad",
+    "description": "Isolation exercise for quadriceps development",
+    "difficulty": "beginner"
+  },
+  "Lying Leg Curls": {
+    "muscleGroup": "Hamstrings",
+    "isBodyweight": false,
+    "equipment": "Lying leg curl machine with weight stack",
+    "description": "Prone leg curls isolating hamstrings",
+    "difficulty": "beginner",
+    "alternativeNames": ["Leg Curls"]
+  },
+  "Seated Leg Curls": {
+    "muscleGroup": "Hamstrings",
+    "isBodyweight": false,
+    "equipment": "Seated leg curl machine with back support",
+    "description": "Seated hamstring curls with back support",
+    "difficulty": "beginner"
+  },
+  "Standing Leg Curls": {
+    "muscleGroup": "Hamstrings",
+    "isBodyweight": false,
+    "equipment": "Standing leg curl machine or cable with ankle cuff",
+    "description": "Unilateral hamstring curls in standing position",
+    "difficulty": "beginner"
+  },
+  "Good Mornings": {
+    "muscleGroup": "Hamstrings",
+    "isBodyweight": false,
+    "equipment": "Olympic barbell, squat rack",
+    "description": "Hip hinge movement with barbell on shoulders",
+    "difficulty": "advanced"
+  },
+  "Nordic Curls": {
+    "muscleGroup": "Hamstrings",
+    "isBodyweight": true,
+    "equipment": "Partner/anchor for ankles or Nordic bench",
+    "description": "Eccentric hamstring exercise, very challenging",
+    "difficulty": "advanced"
+  },
+  "Single-Leg Deadlift": {
+    "muscleGroup": "Hamstrings",
+    "isBodyweight": false,
+    "equipment": "Dumbbells or kettlebell",
+    "description": "Unilateral deadlift for balance and hamstring strength",
+    "difficulty": "intermediate"
+  },
+  "Standing Calf Raises": {
+    "muscleGroup": "Calves",
+    "isBodyweight": false,
+    "equipment": "Calf raise machine or platform with dumbbells",
+    "description": "Standing calf raises targeting gastrocnemius",
+    "difficulty": "beginner"
+  },
+  "Seated Calf Raises": {
+    "muscleGroup": "Calves",
+    "isBodyweight": false,
+    "equipment": "Seated calf raise machine with thigh pad",
+    "description": "Seated calf raises emphasizing soleus muscle",
+    "difficulty": "beginner"
+  },
+  "Single-Leg Calf Raises": {
+    "muscleGroup": "Calves",
+    "isBodyweight": false,
+    "equipment": "Platform/step, optional dumbbell",
+    "description": "Unilateral calf raises for balanced development",
+    "difficulty": "beginner"
+  },
+  "Calf Press on Leg Press": {
+    "muscleGroup": "Calves",
+    "isBodyweight": false,
+    "equipment": "Leg press machine, toe positioning",
+    "description": "Calf raises using leg press machine",
+    "difficulty": "beginner"
+  },
+  "Hip Thrusts": {
+    "muscleGroup": "Glutes",
+    "isBodyweight": false,
+    "equipment": "Bench, barbell with pad or dumbbells",
+    "description": "Hip extension movement targeting glute development",
+    "difficulty": "beginner"
+  },
+  "Glute Bridges": {
+    "muscleGroup": "Glutes",
+    "isBodyweight": false,
+    "equipment": "Optional barbell/dumbbells",
+    "description": "Floor-based hip thrust variation",
+    "difficulty": "beginner"
+  },
+  "Cable Kickbacks": {
+    "muscleGroup": "Glutes",
+    "isBodyweight": false,
+    "equipment": "Cable machine with ankle cuff attachment",
+    "description": "Isolated glute extension using cable",
+    "difficulty": "beginner"
+  },
+  "Clamshells": {
+    "muscleGroup": "Glutes",
+    "isBodyweight": true,
+    "equipment": "Optional mini resistance band",
+    "description": "Side-lying hip abduction targeting glute medius",
+    "difficulty": "beginner"
+  },
+  "Step-Ups": {
+    "muscleGroup": "Quads",
+    "isBodyweight": false,
+    "equipment": "Bench/box (12-20\"), optional dumbbells",
+    "description": "Stepping exercise targeting quads and glutes",
+    "difficulty": "beginner"
+  },
+  "Standard Plank": {
+    "muscleGroup": "Core",
+    "isBodyweight": true,
+    "equipment": "Exercise mat recommended",
+    "description": "Isometric core hold in push-up position",
+    "difficulty": "beginner",
+    "alternativeNames": ["Planks", "Plank"]
+  },
+  "Side Plank": {
+    "muscleGroup": "Core",
+    "isBodyweight": true,
+    "equipment": "Exercise mat recommended",
+    "description": "Lateral plank targeting obliques and core stability",
+    "difficulty": "beginner",
+    "alternativeNames": ["Side Planks"]
+  },
+  "Plank with Shoulder Taps": {
+    "muscleGroup": "Core",
+    "isBodyweight": true,
+    "equipment": "Exercise mat",
+    "description": "Plank with alternating shoulder touches for anti-rotation",
+    "difficulty": "intermediate"
+  },
+  "Weighted Planks": {
+    "muscleGroup": "Core",
+    "isBodyweight": false,
+    "equipment": "Weight plate (25-45 lbs) on back",
+    "description": "Plank with added weight for increased difficulty",
+    "difficulty": "intermediate"
+  },
+  "Bicycle Crunches": {
+    "muscleGroup": "Core",
+    "isBodyweight": true,
+    "equipment": "Exercise mat",
+    "description": "Alternating crunch with knee-to-elbow motion",
+    "difficulty": "beginner"
+  },
+  "Basic Crunches": {
+    "muscleGroup": "Core",
+    "isBodyweight": true,
+    "equipment": "Exercise mat",
+    "description": "Traditional abdominal crunch movement",
+    "difficulty": "beginner",
+    "alternativeNames": ["Crunches"]
+  },
+  "Sit-ups": {
+    "muscleGroup": "Core",
+    "isBodyweight": true,
+    "equipment": "Mat, optional foot anchor",
+    "description": "Full range abdominal exercise from floor to sitting",
+    "difficulty": "beginner"
+  },
+  "V-ups": {
+    "muscleGroup": "Core",
+    "isBodyweight": true,
+    "equipment": "Exercise mat",
+    "description": "Simultaneous leg and torso raise forming V-shape",
+    "difficulty": "intermediate"
+  },
+  "Leg Raises (Lying)": {
+    "muscleGroup": "Core",
+    "isBodyweight": true,
+    "equipment": "Mat or bench",
+    "description": "Lying leg raises targeting lower abdominals",
+    "difficulty": "beginner"
+  },
+  "Hanging Leg Raises": {
+    "muscleGroup": "Core",
+    "isBodyweight": true,
+    "equipment": "Pull-up bar or captain's chair",
+    "description": "Hanging leg raises for advanced core strength",
+    "difficulty": "advanced"
+  },
+  "Russian Twists": {
+    "muscleGroup": "Core",
+    "isBodyweight": false,
+    "equipment": "Optional medicine ball/weight plate",
+    "description": "Seated torso rotation targeting obliques",
+    "difficulty": "beginner"
+  },
+  "Cable Wood Chops": {
+    "muscleGroup": "Core",
+    "isBodyweight": false,
+    "equipment": "Cable machine with D-handle attachment",
+    "description": "Rotational movement using cable for obliques",
+    "difficulty": "intermediate"
+  },
+  "Cable Crunches": {
+    "muscleGroup": "Core",
+    "isBodyweight": false,
+    "equipment": "Cable machine with rope attachment (high pulley)",
+    "description": "Kneeling crunches using cable resistance",
+    "difficulty": "beginner"
+  },
+  "Cable Side Bends": {
+    "muscleGroup": "Core",
+    "isBodyweight": false,
+    "equipment": "Cable machine with D-handle (low pulley)",
+    "description": "Lateral flexion using cable resistance",
+    "difficulty": "beginner"
+  },
+  "Dead Bugs": {
+    "muscleGroup": "Core",
+    "isBodyweight": true,
+    "equipment": "Exercise mat",
+    "description": "Supine core stability exercise with alternating limbs",
+    "difficulty": "beginner"
+  },
+  "Bird Dogs": {
+    "muscleGroup": "Core",
+    "isBodyweight": true,
+    "equipment": "Exercise mat",
+    "description": "Quadruped stability exercise extending opposite limbs",
+    "difficulty": "beginner"
+  },
+  "Pallof Press": {
+    "muscleGroup": "Core",
+    "isBodyweight": false,
+    "equipment": "Cable machine with D-handle or resistance band",
+    "description": "Anti-rotation exercise holding cable at chest",
+    "difficulty": "intermediate"
+  },
+  "Mountain Climbers": {
+    "muscleGroup": "Core",
+    "isBodyweight": true,
+    "equipment": "Exercise mat",
+    "description": "Dynamic plank with alternating knee drives",
+    "difficulty": "intermediate"
+  },
+  "Ab Wheel Rollouts": {
+    "muscleGroup": "Core",
+    "isBodyweight": false,
+    "equipment": "Ab wheel with handles",
+    "description": "Advanced core exercise rolling wheel away from body",
+    "difficulty": "advanced"
+  },
+  "Med Ball V-ups": {
+    "muscleGroup": "Core",
+    "isBodyweight": false,
+    "equipment": "Medicine ball (6-15 lbs)",
+    "description": "V-ups holding medicine ball for added resistance",
+    "difficulty": "intermediate"
+  }
+}

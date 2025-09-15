@@ -1,0 +1,245 @@
+{
+  "barbells": {
+    "olympic_barbell": {
+      "name": "Olympic Barbell",
+      "weight": "45 lbs",
+      "length": "7 feet",
+      "sleeve_diameter": "2 inches",
+      "description": "Standard Olympic barbell for most compound movements"
+    },
+    "ez_curl_bar": {
+      "name": "EZ-Curl Bar",
+      "weight": "25-35 lbs",
+      "length": "4 feet",
+      "description": "Angled grip bar reducing wrist strain for curls and extensions"
+    },
+    "trap_bar": {
+      "name": "Trap Bar (Hex Bar)",
+      "weight": "45-60 lbs",
+      "shape": "Hexagonal",
+      "description": "Hexagonal bar for deadlifts allowing neutral grip"
+    }
+  },
+  "cable_attachments": {
+    "rope_attachment": {
+      "name": "Rope Attachment",
+      "use": "Tricep pushdowns, face pulls, cable crunches",
+      "description": "Rope with end caps allowing wrist rotation and separation"
+    },
+    "v_handle": {
+      "name": "V-Handle Attachment",
+      "use": "Close-grip rows, tricep pushdowns",
+      "description": "V-shaped handle for close-grip pulling movements"
+    },
+    "d_handle": {
+      "name": "D-Handle Attachment", 
+      "use": "Single-arm work, wood chops, lateral raises",
+      "description": "Single D-shaped handle for unilateral movements"
+    },
+    "straight_bar": {
+      "name": "Straight Bar Attachment",
+      "use": "Lat pulldowns, cable curls, pushdowns",
+      "description": "Straight bar for bilateral movements"
+    },
+    "wide_grip_bar": {
+      "name": "Wide Grip Lat Bar",
+      "width": "48+ inches",
+      "use": "Wide-grip lat pulldowns",
+      "description": "Extra-wide bar for targeting outer lats"
+    },
+    "ankle_cuff": {
+      "name": "Ankle Cuff Attachment",
+      "use": "Cable kickbacks, leg curls",
+      "description": "Padded cuff that attaches around ankle for leg exercises"
+    }
+  },
+  "benches": {
+    "flat_bench": {
+      "name": "Flat Bench",
+      "height": "17-19 inches",
+      "width": "12 inches",
+      "description": "Standard flat bench for pressing movements"
+    },
+    "adjustable_incline_bench": {
+      "name": "Adjustable Incline Bench",
+      "angles": "0-90 degrees",
+      "common_angles": "30°, 45°, 60°, 90°",
+      "description": "Bench with adjustable backrest for various angles"
+    },
+    "decline_bench": {
+      "name": "Decline Bench",
+      "angle": "15-30 degrees below horizontal",
+      "features": "Ankle supports/leg pads",
+      "description": "Bench angled downward with leg supports"
+    },
+    "preacher_bench": {
+      "name": "Preacher Bench",
+      "angle": "45-60 degree arm pad",
+      "use": "Bicep curls",
+      "description": "Angled pad for isolated arm exercises"
+    }
+  },
+  "racks_and_stations": {
+    "squat_rack": {
+      "name": "Squat Rack/Power Rack",
+      "features": "Safety bars, J-hooks, pull-up bar",
+      "height_range": "Adjustable 20-80 inches",
+      "description": "Multi-purpose rack for squats, bench press, and pull-ups"
+    },
+    "dip_station": {
+      "name": "Dip Station/Parallel Bars",
+      "width": "24 inches between bars",
+      "height": "32-36 inches",
+      "description": "Parallel bars for bodyweight dips"
+    },
+    "pull_up_bar": {
+      "name": "Pull-up Bar",
+      "types": "Fixed, adjustable, door-mounted",
+      "grip_width": "Various grip positions",
+      "description": "Bar for pull-ups and chin-ups"
+    },
+    "roman_chair": {
+      "name": "Roman Chair/Back Extension",
+      "angles": "45° or 90°",
+      "use": "Back extensions, leg raises",
+      "description": "Station for back extensions and core work"
+    }
+  },
+  "machines": {
+    "cable_machine": {
+      "name": "Cable Machine",
+      "type": "Adjustable height pulley system",
+      "weight_stack": "Usually 150-300 lbs",
+      "description": "Versatile machine with adjustable cable heights"
+    },
+    "dual_cable_machine": {
+      "name": "Dual Cable Machine",
+      "type": "Two independent cable stacks",
+      "use": "Cable crossovers, dual-arm movements",
+      "description": "Two cable systems for bilateral exercises"
+    },
+    "leg_press_machine": {
+      "name": "Leg Press Machine",
+      "angles": "45° or horizontal",
+      "plate_capacity": "Multiple 45 lb plates",
+      "description": "Machine for leg pressing with various foot positions"
+    },
+    "leg_extension_machine": {
+      "name": "Leg Extension Machine",
+      "adjustment": "Adjustable back pad and leg pad",
+      "isolation": "Quadriceps isolation",
+      "description": "Machine for isolated quadriceps development"
+    },
+    "leg_curl_machine": {
+      "name": "Leg Curl Machine",
+      "types": "Lying, seated, standing",
+      "isolation": "Hamstring isolation",
+      "description": "Machine for hamstring curls in various positions"
+    },
+    "pec_deck_machine": {
+      "name": "Pec Deck Machine",
+      "adjustment": "Adjustable seat height",
+      "use": "Chest flyes, reverse flyes",
+      "description": "Machine for chest and rear delt isolation"
+    },
+    "lat_pulldown_machine": {
+      "name": "Lat Pulldown Machine",
+      "features": "Adjustable thigh pads, various bars",
+      "weight_stack": "Pin-loaded weight stack",
+      "description": "Seated machine for lat pulldown movements"
+    },
+    "calf_raise_machine": {
+      "name": "Calf Raise Machine",
+      "types": "Standing, seated",
+      "features": "Shoulder pads (standing) or thigh pads (seated)",
+      "description": "Machine for calf raise exercises"
+    }
+  },
+  "plates_and_weights": {
+    "olympic_plates": {
+      "name": "Olympic Weight Plates",
+      "hole_diameter": "2 inches",
+      "standard_weights": "2.5, 5, 10, 25, 35, 45 lbs",
+      "description": "Standard plates for Olympic barbells"
+    },
+    "dumbbells": {
+      "name": "Dumbbells",
+      "types": "Fixed weight, adjustable, hex, round",
+      "range": "5-150+ lbs per dumbbell",
+      "description": "Free weights for unilateral and bilateral exercises"
+    },
+    "kettlebells": {
+      "name": "Kettlebells",
+      "range": "10-80+ lbs",
+      "use": "Swings, goblet squats, Turkish get-ups",
+      "description": "Ball-shaped weights with handles for dynamic movements"
+    },
+    "weight_collars": {
+      "name": "Weight Collars/Clips",
+      "types": "Spring clips, lock-jaw, Olympic collars",
+      "purpose": "Secure plates on barbell",
+      "description": "Safety devices to prevent plates from sliding"
+    }
+  },
+  "accessories": {
+    "exercise_mat": {
+      "name": "Exercise Mat",
+      "thickness": "1/4 to 1 inch",
+      "use": "Floor exercises, stretching",
+      "description": "Padded mat for floor-based exercises"
+    },
+    "resistance_bands": {
+      "name": "Resistance Bands",
+      "types": "Loop bands, tube bands, flat bands",
+      "resistance": "Light to extra heavy",
+      "description": "Elastic bands providing variable resistance"
+    },
+    "ab_wheel": {
+      "name": "Ab Wheel",
+      "features": "Handles, knee pad",
+      "use": "Core strengthening rollouts",
+      "description": "Wheel with handles for advanced core exercises"
+    },
+    "medicine_ball": {
+      "name": "Medicine Ball",
+      "weights": "6-30 lbs",
+      "types": "Rubber, leather, slam balls",
+      "description": "Weighted ball for dynamic and core exercises"
+    },
+    "gymnastic_rings": {
+      "name": "Gymnastics Rings",
+      "material": "Wood or plastic",
+      "features": "Adjustable straps",
+      "description": "Rings for advanced bodyweight exercises"
+    },
+    "foam_roller": {
+      "name": "Foam Roller",
+      "density": "Soft to firm",
+      "length": "12-36 inches",
+      "use": "Myofascial release, recovery",
+      "description": "Cylindrical tool for muscle recovery"
+    }
+  },
+  "setup_requirements": {
+    "ceiling_height": {
+      "minimum": "8 feet",
+      "recommended": "9-10 feet",
+      "note": "Required for overhead pressing and pull-ups"
+    },
+    "floor_space": {
+      "minimum": "8x8 feet",
+      "recommended": "12x12 feet",
+      "note": "Space needed for most exercises and safety"
+    },
+    "flooring": {
+      "types": "Rubber mats, interlocking tiles, concrete",
+      "thickness": "1/2 to 3/4 inch recommended",
+      "note": "Protects floor and reduces noise"
+    },
+    "electrical": {
+      "lighting": "Bright, even lighting recommended",
+      "ventilation": "Fan or air circulation important",
+      "note": "Safety and comfort considerations"
+    }
+  }
+}
