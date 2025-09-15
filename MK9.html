@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Tracker</title>
+    <meta name="theme-color" content="#1f2937">
+    <meta name="description" content="Personal gym workout tracker">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 15px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #10b981, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .week-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .workout-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #3b82f6, #2563eb);
+            border-color: #3b82f6;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .exercise {
+            margin-bottom: 15px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+        }
+
+        .exercise-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #10b981;
+        }
+
+        .exercise-meta {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .muscle-group-tag {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .equipment-tag {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-style: italic;
+        }
+
+        .sets-container {
+            display: grid;
+            gap: 8px;
+        }
+
+        .set {
+            display: grid;
+            grid-template-columns: auto 1fr 1fr auto;
+            gap: 10px;
+            align-items: center;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .set-number {
+            font-weight: 600;
+            color: #60a5fa;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .input-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .set-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 8px;
+            border-radius: 6px;
+            font-size: 16px;
+            text-align: center;
+            width: 100%;
+            max-width: 80px;
+        }
+
+        .set-input:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .action-btn.success {
+            border-color: #10b981;
+            color: #6ee7b7;
+        }
+
+        .action-btn.danger {
+            border-color: #ef4444;
+            color: #fecaca;
+        }
+
+        .action-btn.primary {
+            border-color: #3b82f6;
+            color: #93c5fd;
+        }
+
+        .exercise-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .exercise-input:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+        }
+
+        .muscle-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .muscle-select option {
+            background: #374151;
+            color: white;
+        }
+
+        .workout-select-btn {
+            width: 100%;
+            padding: 15px;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .workout-select-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+        }
+
+        .exercise-row {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .add-exercise-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .exercise-suggestions,
+        .equipment-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(31, 41, 55, 0.98);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            margin-top: 2px;
+        }
+
+        .suggestion-item {
+            padding: 12px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background-color 0.2s;
+        }
+
+        .suggestion-item:hover {
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 100%;
+                min-height: 48px;
+            }
+
+            .add-exercise-row {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💪 Gym Tracker</h1>
+        </div>
+
+        <div class="week-info">
+            <div id="todayInfo">Welcome to your personal gym tracker!</div>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="nav-btn active" data-section="workout">Today's Workout</button>
+            <button class="nav-btn" data-section="workouts">Workouts</button>
+            <button class="nav-btn" data-section="progress">Progress</button>
+            <button class="nav-btn" data-section="history">History</button>
+            <button class="nav-btn" data-section="settings">Settings</button>
+        </div>
+
+        <div id="workoutSection">
+            <div id="todayWorkout"></div>
+        </div>
+
+        <div id="workoutsSection" class="hidden">
+            <div class="workout-card">
+                <h2>Workouts</h2>
+                <p>Create and manage your workouts here.</p>
+                
+                <div style="margin: 15px 0;">
+                    <button class="action-btn success" onclick="showCreateWorkout()">+ Create New Workout</button>
+                </div>
+
+                <div id="workoutForm" class="hidden" style="margin-top: 20px;">
+                    <h3 style="color: #10b981; margin-bottom: 15px;">Create New Workout</h3>
+                    <input type="text" id="workoutName" placeholder="Workout name (e.g., Push Day)" class="exercise-input" style="margin-bottom: 15px;" />
+                    <div id="workoutExercises"></div>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <button class="action-btn" onclick="addExercise()">+ Add Exercise</button>
+                        <button class="action-btn success" onclick="saveWorkout()">Save Workout</button>
+                        <button class="action-btn" onclick="hideWorkoutForm()">Cancel</button>
+                    </div>
+                </div>
+
+                <div id="workoutsList"></div>
+            </div>
+        </div>
+
+        <div id="progressSection" class="hidden">
+            <div class="workout-card">
+                <h2>Progress</h2>
+                <p>Your progress tracking will appear here.</p>
+            </div>
+        </div>
+
+        <div id="historySection" class="hidden">
+            <div class="workout-card">
+                <h2>History</h2>
+                <div id="historyContent"></div>
+            </div>
+        </div>
+
+        <div id="settingsSection" class="hidden">
+            <div class="workout-card">
+                <h2>Settings</h2>
+                <div id="settingsContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let appData = {
+            workouts: {},
+            workoutHistory: {},
+            activeWorkouts: {},
+            settings: {}
+        };
+
+        let exerciseDB = {};
+        let equipmentDB = [];
+
+        // Load databases from GitHub
+        async function loadDatabases() {
+            // GitHub raw content URLs for CJWiebe/Jim-Tracker repository
+            const GITHUB_BASE = 'https://raw.githubusercontent.com/CJWiebe/Jim-Time/main/';
+            
+            // Try to load exercises.json from GitHub
+            try {
+                console.log('Loading exercises from GitHub...');
+                const response = await fetch(GITHUB_BASE + 'exercises.json');
+                if (response.ok) {
+                    exerciseDB = await response.json();
+                    console.log('✓ Loaded', Object.keys(exerciseDB).length, 'exercises from GitHub');
+                } else {
+                    throw new Error('Could not fetch from GitHub');
+                }
+            } catch (e) {
+                console.warn('⚠ Could not load exercises.json from GitHub - using basic data');
+                console.warn('  Make sure exercises.json is uploaded to your GitHub repository');
+                exerciseDB = {
+                    'Bench Press': { muscleGroup: 'Chest', equipment: 'Barbell, Bench' },
+                    'Squats': { muscleGroup: 'Quads', equipment: 'Barbell, Squat rack' },
+                    'Deadlifts': { muscleGroup: 'Back', equipment: 'Barbell, Weight plates' },
+                    'Pull-ups': { muscleGroup: 'Back', equipment: 'Pull-up bar' },
+                    'Overhead Press': { muscleGroup: 'Shoulders', equipment: 'Barbell' },
+                    'Barbell Rows': { muscleGroup: 'Back', equipment: 'Barbell' },
+                    'Dips': { muscleGroup: 'Triceps', equipment: 'Dip bars' },
+                    'Barbell Curls': { muscleGroup: 'Biceps', equipment: 'Barbell' }
+                };
+            }
+
+            // Try to load equipment.json from GitHub
+            try {
+                console.log('Loading equipment from GitHub...');
+                const response = await fetch(GITHUB_BASE + 'equipment.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    equipmentDB = [];
+                    // Extract equipment names from all categories
+                    Object.values(data).forEach(category => {
+                        if (typeof category === 'object') {
+                            Object.values(category).forEach(item => {
+                                if (item && item.name) equipmentDB.push(item.name);
+                            });
+                        }
+                    });
+                    console.log('✓ Loaded', equipmentDB.length, 'equipment items from GitHub');
+                } else {
+                    throw new Error('Could not fetch from GitHub');
+                }
+            } catch (e) {
+                console.warn('⚠ Could not load equipment.json from GitHub - using basic data');
+                console.warn('  Make sure equipment.json is uploaded to your GitHub repository');
+                equipmentDB = ['Barbell', 'Dumbbells', 'Pull-up bar', 'Cable machine', 'Bench', 'Squat rack'];
+            }
+        }
+
+        // Initialize
+        async function init() {
+            await loadDatabases();
+            loadData();
+            setupEventListeners();
+            showTodayWorkout();
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem('gymTrackerData');
+            if (saved) {
+                try {
+                    appData = JSON.parse(saved);
+                } catch (e) {
+                    console.error('Error loading saved data');
+                }
+            }
+            
+            // Initialize sample workouts if none exist
+            if (!appData.workouts || Object.keys(appData.workouts).length === 0) {
+                appData.workouts = {
+                    'sample1': {
+                        name: 'Push Day',
+                        exercises: [
+                            { name: 'Bench Press', muscleGroup: 'Chest', equipment: 'Barbell, Bench' },
+                            { name: 'Overhead Press', muscleGroup: 'Shoulders', equipment: 'Barbell' },
+                            { name: 'Dips', muscleGroup: 'Triceps', equipment: 'Dip bars' }
+                        ]
+                    },
+                    'sample2': {
+                        name: 'Pull Day',
+                        exercises: [
+                            { name: 'Pull-ups', muscleGroup: 'Back', equipment: 'Pull-up bar' },
+                            { name: 'Barbell Rows', muscleGroup: 'Back', equipment: 'Barbell' },
+                            { name: 'Barbell Curls', muscleGroup: 'Biceps', equipment: 'Barbell' }
+                        ]
+                    }
+                };
+                saveData();
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('gymTrackerData', JSON.stringify(appData));
+        }
+
+        function setupEventListeners() {
+            // Navigation
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const section = this.dataset.section;
+                    showSection(section);
+                    
+                    // Update active button
+                    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Close dropdowns on outside click
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.input-container')) {
+                    document.querySelectorAll('.exercise-suggestions, .equipment-suggestions').forEach(el => {
+                        el.classList.add('hidden');
+                    });
+                }
+            });
+        }
+
+        function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('[id$="Section"]').forEach(el => {
+                el.classList.add('hidden');
+            });
+            
+            // Show selected section
+            document.getElementById(section + 'Section').classList.remove('hidden');
+            
+            // Load section-specific content
+            if (section === 'workout') showTodayWorkout();
+            if (section === 'workouts') showWorkoutsList();
+            if (section === 'history') showHistory();
+            if (section === 'settings') showSettings();
+        }
+
+        function showTodayWorkout() {
+            const container = document.getElementById('todayWorkout');
+            const today = new Date().toDateString();
+            
+            // Check for active workout
+            if (appData.activeWorkouts && appData.activeWorkouts[today]) {
+                showActiveWorkout(today);
+                return;
+            }
+            
+            // Show workout selection
+            const workouts = Object.entries(appData.workouts || {});
+            
+            let html = '<div class="workout-card"><h2>Choose Today\'s Workout</h2>';
+            
+            workouts.forEach(([id, workout]) => {
+                html += `
+                    <button class="workout-select-btn" onclick="startWorkout('${id}')">
+                        <div>
+                            <div style="font-weight: 600; color: #10b981;">${workout.name}</div>
+                            <div style="font-size: 0.9rem; opacity: 0.8;">
+                                ${workout.exercises.length} exercises
+                            </div>
+                        </div>
+                        <div>▶</div>
+                    </button>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function startWorkout(workoutId) {
+            const workout = appData.workouts[workoutId];
+            if (!workout) return;
+            
+            const today = new Date().toDateString();
+            
+            if (!appData.activeWorkouts) appData.activeWorkouts = {};
+            
+            appData.activeWorkouts[today] = {
+                workoutId: workoutId,
+                name: workout.name,
+                exercises: workout.exercises.map(ex => ({
+                    ...ex,
+                    sets: [
+                        { weight: '', reps: '' },
+                        { weight: '', reps: '' },
+                        { weight: '', reps: '' },
+                        { weight: '', reps: '' }
+                    ]
+                }))
+            };
+            
+            saveData();
+            showActiveWorkout(today);
+        }
+
+        function showActiveWorkout(dateKey) {
+            const container = document.getElementById('todayWorkout');
+            const workout = appData.activeWorkouts[dateKey];
+            
+            let html = `
+                <div class="workout-card">
+                    <h2>${workout.name}</h2>
+                    <div style="margin: 15px 0;">
+                        <button class="action-btn" onclick="cancelWorkout('${dateKey}')">Cancel</button>
+                        <button class="action-btn success" onclick="completeWorkout('${dateKey}')">Complete Workout</button>
+                    </div>
+            `;
+            
+            workout.exercises.forEach((ex, i) => {
+                html += `
+                    <div class="exercise">
+                        <div class="exercise-name">${ex.name}</div>
+                        <div class="exercise-meta">
+                            <span class="muscle-group-tag">${ex.muscleGroup}</span>
+                            ${ex.equipment ? `<span class="equipment-tag">${ex.equipment}</span>` : ''}
+                        </div>
+                        <div class="sets-container">
+                `;
+                
+                ex.sets.forEach((set, j) => {
+                    html += `
+                        <div class="set">
+                            <div class="set-number">Set ${j + 1}</div>
+                            <div class="input-group">
+                                <div class="input-label">Weight</div>
+                                <input type="number" class="set-input" value="${set.weight}"
+                                    onchange="updateSet('${dateKey}', ${i}, ${j}, 'weight', this.value)">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-label">Reps</div>
+                                <input type="number" class="set-input" value="${set.reps}"
+                                    onchange="updateSet('${dateKey}', ${i}, ${j}, 'reps', this.value)">
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div></div>';
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function updateSet(dateKey, exIndex, setIndex, field, value) {
+            appData.activeWorkouts[dateKey].exercises[exIndex].sets[setIndex][field] = value;
+            saveData();
+        }
+
+        function completeWorkout(dateKey) {
+            const workout = appData.activeWorkouts[dateKey];
+            if (!appData.workoutHistory) appData.workoutHistory = {};
+            
+            const historyKey = new Date().toISOString();
+            appData.workoutHistory[historyKey] = {
+                ...workout,
+                completedAt: new Date().toISOString()
+            };
+            
+            delete appData.activeWorkouts[dateKey];
+            saveData();
+            
+            alert('Workout completed!');
+            showTodayWorkout();
+        }
+
+        function cancelWorkout(dateKey) {
+            if (confirm('Cancel workout?')) {
+                delete appData.activeWorkouts[dateKey];
+                saveData();
+                showTodayWorkout();
+            }
+        }
+
+        // Workout management
+        function showCreateWorkout() {
+            document.getElementById('workoutForm').classList.remove('hidden');
+            document.getElementById('workoutName').value = '';
+            document.getElementById('workoutExercises').innerHTML = '';
+            addExercise();
+        }
+
+        function hideWorkoutForm() {
+            document.getElementById('workoutForm').classList.add('hidden');
+        }
+
+        function addExercise() {
+            const container = document.getElementById('workoutExercises');
+            const div = document.createElement('div');
+            div.className = 'exercise-row';
+            div.innerHTML = `
+                <div class="add-exercise-row">
+                    <div class="input-container">
+                        <input type="text" placeholder="Exercise name (type to search)" 
+                               class="exercise-input ex-name" 
+                               oninput="showExSuggestions(this)"
+                               autocomplete="off">
+                        <div class="exercise-suggestions hidden"></div>
+                    </div>
+                    <select class="muscle-select">
+                        <option value="">Muscle group...</option>
+                        <option value="Back">Back</option>
+                        <option value="Chest">Chest</option>
+                        <option value="Shoulders">Shoulders</option>
+                        <option value="Triceps">Triceps</option>
+                        <option value="Biceps">Biceps</option>
+                        <option value="Quads">Quads</option>
+                        <option value="Hamstrings">Hamstrings</option>
+                        <option value="Glutes">Glutes</option>
+                        <option value="Calves">Calves</option>
+                        <option value="Rear Delts">Rear Delts</option>
+                        <option value="Core">Core</option>
+                    </select>
+                </div>
+                <div class="input-container">
+                    <input type="text" placeholder="Equipment (type to search)" 
+                           class="exercise-input eq-input"
+                           oninput="showEqSuggestions(this)"
+                           autocomplete="off">
+                    <div class="equipment-suggestions hidden"></div>
+                </div>
+                <button class="action-btn danger" onclick="this.parentElement.remove()">Remove</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function showExSuggestions(input) {
+            const value = input.value.toLowerCase();
+            const container = input.nextElementSibling;
+            
+            if (value.length < 2) {
+                container.classList.add('hidden');
+                return;
+            }
+            
+            const matches = Object.keys(exerciseDB)
+                .filter(name => name.toLowerCase().includes(value))
+                .slice(0, 10);
+            
+            if (matches.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+            
+            container.innerHTML = matches.map(name => {
+                const data = exerciseDB[name];
+                return `
+                    <div class="suggestion-item" onclick="selectExercise(this, '${name}')">
+                        <div style="font-weight: 600; color: #10b981;">${name}</div>
+                        <div style="font-size: 12px; opacity: 0.8;">
+                            ${data.muscleGroup} • ${data.equipment || 'No equipment'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.classList.remove('hidden');
+        }
+
+        function selectExercise(el, name) {
+            const row = el.closest('.exercise-row');
+            const data = exerciseDB[name];
+            
+            row.querySelector('.ex-name').value = name;
+            row.querySelector('.muscle-select').value = data.muscleGroup || '';
+            row.querySelector('.eq-input').value = data.equipment || '';
+            
+            el.parentElement.classList.add('hidden');
+        }
+
+        function showEqSuggestions(input) {
+            const value = input.value.toLowerCase();
+            const container = input.nextElementSibling;
+            
+            if (value.length < 1) {
+                container.classList.add('hidden');
+                return;
+            }
+            
+            const matches = equipmentDB
+                .filter(name => name.toLowerCase().includes(value))
+                .slice(0, 8);
+            
+            if (matches.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+            
+            container.innerHTML = matches.map(name => `
+                <div class="suggestion-item" onclick="selectEquipment(this, '${name}')">
+                    <div style="color: #60a5fa;">${name}</div>
+                </div>
+            `).join('');
+            
+            container.classList.remove('hidden');
+        }
+
+        function selectEquipment(el, name) {
+            el.closest('.input-container').querySelector('.eq-input').value = name;
+            el.parentElement.classList.add('hidden');
+        }
+
+        function saveWorkout() {
+            const name = document.getElementById('workoutName').value.trim();
+            if (!name) {
+                alert('Enter workout name');
+                return;
+            }
+            
+            const exercises = [];
+            document.querySelectorAll('#workoutExercises .exercise-row').forEach(row => {
+                const exName = row.querySelector('.ex-name').value.trim();
+                const muscle = row.querySelector('.muscle-select').value;
+                const equipment = row.querySelector('.eq-input').value.trim();
+                
+                if (exName && muscle) {
+                    exercises.push({ name: exName, muscleGroup: muscle, equipment });
+                }
+            });
+            
+            if (exercises.length === 0) {
+                alert('Add at least one exercise');
+                return;
+            }
+            
+            const id = Date.now().toString();
+            appData.workouts[id] = { name, exercises };
+            saveData();
+            
+            hideWorkoutForm();
+            showWorkoutsList();
+            alert('Workout saved!');
+        }
+
+        function showWorkoutsList() {
+            const container = document.getElementById('workoutsList');
+            const workouts = Object.entries(appData.workouts || {});
+            
+            if (workouts.length === 0) {
+                container.innerHTML = '<p>No workouts yet</p>';
+                return;
+            }
+            
+            let html = '<h3 style="color: #10b981; margin: 20px 0 15px;">Your Workouts</h3>';
+            
+            workouts.forEach(([id, workout]) => {
+                html += `
+                    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: 600; color: #10b981;">${workout.name}</div>
+                                <div style="font-size: 0.9rem; opacity: 0.8;">
+                                    ${workout.exercises.map(e => e.name).join(', ')}
+                                </div>
+                            </div>
+                            <button class="action-btn danger" onclick="deleteWorkout('${id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function deleteWorkout(id) {
+            if (confirm('Delete workout?')) {
+                delete appData.workouts[id];
+                saveData();
+                showWorkoutsList();
+            }
+        }
+
+        function showHistory() {
+            const container = document.getElementById('historyContent');
+            const history = Object.entries(appData.workoutHistory || {})
+                .sort((a, b) => new Date(b[1].completedAt) - new Date(a[1].completedAt));
+            
+            if (history.length === 0) {
+                container.innerHTML = '<p>No completed workouts yet</p>';
+                return;
+            }
+            
+            container.innerHTML = history.map(([key, workout]) => `
+                <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                    <h4 style="color: #10b981;">${workout.name}</h4>
+                    <p>Completed: ${new Date(workout.completedAt).toLocaleString()}</p>
+                </div>
+            `).join('');
+        }
+
+        function showSettings() {
+            document.getElementById('settingsContent').innerHTML = `
+                <div style="margin: 20px 0;">
+                    <h3 style="color: #10b981;">Data Management</h3>
+                    <button class="action-btn" onclick="exportData()">Export Data</button>
+                    <button class="action-btn danger" onclick="clearData()">Clear All Data</button>
+                </div>
+            `;
+        }
+
+        function exportData() {
+            const blob = new Blob([JSON.stringify(appData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'gym-tracker-data.json';
+            a.click();
+        }
+
+        function clearData() {
+            if (confirm('Delete all data?')) {
+                appData = { workouts: {}, workoutHistory: {}, activeWorkouts: {} };
+                saveData();
+                location.reload();
+            }
+        }
+
+        // Start app
+        init();
+    </script>
+</body>
+</html>
