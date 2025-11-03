@@ -1,0 +1,2581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Jim Tracker</title>
+    <meta name="theme-color" content="#1f2937">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            overflow-x: hidden;
+            width: 100%;
+        }
+        
+        html, body, div, span, p, h1, h2, h3, h4, h5, h6 {
+            max-width: 100%;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 8px;
+            padding-bottom: 70px;
+            line-height: 1.3;
+            font-size: 13px;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #10b981, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .week-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            font-size: 12px;
+        }
+
+        .workout-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            font-size: 13px;
+            min-height: 36px;
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #3b82f6, #2563eb);
+            border-color: #3b82f6;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            min-height: 44px;
+        }
+
+        .action-btn.success {
+            border-color: #10b981;
+            color: #6ee7b7;
+        }
+
+        .action-btn.danger {
+            border-color: #ef4444;
+            color: #fecaca;
+        }
+
+        .action-btn.primary {
+            border-color: #3b82f6;
+            color: #93c5fd;
+        }
+
+        .timer-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 36px;
+            font-size: 13px;
+        }
+
+        .timer-content {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .timer-display {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer-display.warning { color: #f59e0b; }
+        .timer-display.danger { color: #ef4444; }
+
+        .timer-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .timer-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 13px;
+            min-height: 36px;
+        }
+
+        .timer-btn.start {
+            background: linear-gradient(45deg, #10b981, #059669);
+            border: none;
+        }
+
+        .timer-btn.stop {
+            background: linear-gradient(45deg, #ef4444, #dc2626);
+            border: none;
+        }
+
+        .time-presets {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .time-preset {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+        }
+
+        .time-preset.active {
+            background: linear-gradient(45deg, #3b82f6, #2563eb);
+            border-color: #3b82f6;
+        }
+
+        .workout-dropdown {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            font-size: 16px;
+            width: 100%;
+            min-height: 48px;
+        }
+
+        .workout-dropdown option {
+            background: #374151;
+            color: white;
+        }
+
+        .quick-add {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .search-bar {
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 14px;
+            min-height: 48px;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-results {
+            max-height: 300px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .search-result {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .search-result:hover {
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .search-result:last-child {
+            border-bottom: none;
+        }
+
+        .exercise-item {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .exercise-name {
+            font-weight: 600;
+            color: #10b981;
+            font-size: 14px;
+        }
+
+        .exercise-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fecaca;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .exercise-content {
+            padding: 0 10px 10px;
+        }
+
+        .set-row {
+            display: grid;
+            grid-template-columns: 35px 1fr 1fr 30px;
+            gap: 6px;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .set-number {
+            text-align: center;
+            font-weight: 600;
+            color: #10b981;
+            font-size: 13px;
+        }
+
+        .exercise-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 14px;
+            text-align: center;
+            min-height: 40px;
+        }
+
+        .exercise-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .set-btn {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #6ee7b7;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .history-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .history-toggle {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #93c5fd;
+            margin-bottom: 8px;
+        }
+
+        .history-entry {
+            font-size: 11px;
+            padding: 6px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            margin-bottom: 4px;
+        }
+
+        .history-entry:last-child {
+            margin-bottom: 0;
+        }
+
+        .muscle-checkbox-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .muscle-checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .muscle-checkbox-label:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .muscle-checkbox {
+            margin: 0;
+        }
+
+        .workout-summary {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 12px;
+                padding: 4px;
+            }
+            
+            .container {
+                padding: 0;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .timer-display {
+                font-size: 1.75rem;
+            }
+            
+            .nav-btn {
+                font-size: 11px;
+                padding: 6px 8px;
+            }
+            
+            .workout-card {
+                padding: 6px;
+            }
+            
+            /* Mobile-optimized set row layout */
+            .set-row {
+                grid-template-columns: 25px 1fr 1fr 26px;
+                gap: 3px;
+            }
+            
+            .set-number {
+                font-size: 11px;
+            }
+            
+            .exercise-input {
+                padding: 5px 2px;
+                font-size: 12px;
+                min-height: 34px;
+            }
+            
+            .set-btn {
+                width: 26px;
+                height: 26px;
+                font-size: 14px;
+            }
+            
+            /* Ensure all divs and content stay within bounds */
+            div, span, p {
+                max-width: 100%;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+            
+            /* Fix SVG scaling on mobile */
+            svg {
+                max-width: 100%;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Jim Tracker</h1>
+            <div class="week-info" id="weekInfo">Loading...</div>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="nav-btn active" onclick="showTab('workout')">Today's Workout</button>
+            <button class="nav-btn" onclick="showTab('workouts')">Create Workouts</button>
+            <button class="nav-btn" onclick="showTab('history')">History</button>
+            <button class="nav-btn" onclick="showTab('progress')">Progress</button>
+            <button class="nav-btn" onclick="showTab('settings')">Settings</button>
+        </div>
+
+        <!-- Workout Tab -->
+        <div id="workoutTab">
+            <!-- Rest Timer -->
+            <div class="workout-card">
+                <div class="timer-toggle" onclick="toggleTimer()">
+                    <span>⏱️ Rest Timer</span>
+                    <span id="timerToggleIcon">▼</span>
+                </div>
+                <div id="timerContent" class="timer-content hidden">
+                    <div class="timer-display" id="timerDisplay">0:00</div>
+                    <div class="timer-controls">
+                        <button class="timer-btn" onclick="adjustTimer(-10)">-10s</button>
+                        <button class="timer-btn start" id="startBtn" onclick="startTimer()">Start</button>
+                        <button class="timer-btn" onclick="adjustTimer(10)">+10s</button>
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <button class="timer-btn" onclick="resetTimer()" style="width: 100%;">Reset</button>
+                    </div>
+                    <div class="time-presets">
+                        <button class="time-preset" onclick="setTimer(60)">1:00</button>
+                        <button class="time-preset" onclick="setTimer(90)">1:30</button>
+                        <button class="time-preset" onclick="setTimer(120)">2:00</button>
+                        <button class="time-preset" onclick="setTimer(180)">3:00</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Start Workout Selection (shown when no workout active) -->
+            <div id="workoutSelection" class="workout-card">
+                <h3 style="color: #10b981; margin-bottom: 10px; font-size: 16px;">Start Workout</h3>
+                <select class="workout-dropdown" id="workoutSelectStart">
+                    <option value="">Select a workout to begin...</option>
+                </select>
+                <button class="action-btn success" onclick="startWorkoutSession()" style="width: 100%; margin-top: 10px;">
+                    🚀 Start Workout
+                </button>
+            </div>
+
+            <!-- Active Workout Interface (shown after starting) -->
+            <div id="activeWorkoutInterface" class="hidden">
+                <!-- Current Workout Header -->
+                <div class="workout-card" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4);">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-size: 12px; opacity: 0.7;">Current Workout</div>
+                            <div style="font-size: 16px; font-weight: 600; color: #10b981;" id="currentWorkoutName">-</div>
+                        </div>
+                        <button class="action-btn danger" onclick="endWorkoutSession()" style="padding: 6px 12px; min-height: 32px;">
+                            End Workout
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Workout Summary -->
+                <div class="workout-summary" id="workoutSummary">
+                    <div class="summary-stats">
+                        <div>
+                            <div class="stat-value" id="exerciseCount">0</div>
+                            <div class="stat-label">Exercises</div>
+                        </div>
+                        <div>
+                            <div class="stat-value" id="setCount">0</div>
+                            <div class="stat-label">Sets</div>
+                        </div>
+                        <div>
+                            <div class="stat-value" id="volumeCount">0</div>
+                            <div class="stat-label">Volume (lbs)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Exercise List -->
+                <div id="exerciseList"></div>
+
+                <!-- Quick Add Exercise -->
+                <div class="workout-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <h3 style="color: #10b981; margin: 0; font-size: 14px;">➕ Add Exercise</h3>
+                        <button class="action-btn primary" onclick="showCustomExerciseManager()" style="padding: 6px 10px; font-size: 12px; min-height: 32px;">
+                            Manage Custom
+                        </button>
+                    </div>
+                    <div class="search-bar">
+                        <input type="text" 
+                               class="search-input" 
+                               id="exerciseSearch" 
+                               placeholder="Search exercises..."
+                               oninput="searchExercises()">
+                    </div>
+                    <div id="searchResults" class="search-results hidden"></div>
+                    <button class="action-btn success" onclick="showCreateCustomExercise()" style="width: 100%; margin-top: 8px;">
+                        + Create Custom Exercise
+                    </button>
+                </div>
+
+                <!-- Finish Workout -->
+                <div class="workout-card">
+                    <button class="action-btn success" onclick="finishWorkout()" style="width: 100%;">
+                        ✓ Finish Workout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workouts Tab -->
+        <div id="workoutsTab" class="hidden">
+            <div class="workout-card">
+                <button class="action-btn primary" id="createWorkoutBtn" onclick="showWorkoutForm()" style="width: 100%;">
+                    + Create Workout
+                </button>
+                
+                <div id="workoutForm" class="hidden">
+                    <h3 style="color: #10b981; margin-bottom: 8px;">Create Workout</h3>
+                    <input type="text" id="workoutName" placeholder="Workout name..." class="search-input" style="margin-bottom: 10px;">
+                    
+                    <h4 style="margin: 10px 0 8px; font-size: 13px;">Select Muscle Groups:</h4>
+                    <div class="muscle-checkbox-container">
+                        <label class="muscle-checkbox-label">
+                            <input type="checkbox" class="muscle-checkbox" value="Chest">
+                            <span>Chest</span>
+                        </label>
+                        <label class="muscle-checkbox-label">
+                            <input type="checkbox" class="muscle-checkbox" value="Back">
+                            <span>Back</span>
+                        </label>
+                        <label class="muscle-checkbox-label">
+                            <input type="checkbox" class="muscle-checkbox" value="Shoulders">
+                            <span>Shoulders</span>
+                        </label>
+                        <label class="muscle-checkbox-label">
+                            <input type="checkbox" class="muscle-checkbox" value="Rear Delts">
+                            <span>Rear Delts</span>
+                        </label>
+                        <label class="muscle-checkbox-label">
+                            <input type="checkbox" class="muscle-checkbox" value="Biceps">
+                            <span>Biceps</span>
+                        </label>
+                        <label class="muscle-checkbox-label">
+                            <input type="checkbox" class="muscle-checkbox" value="Triceps">
+                            <span>Triceps</span>
+                        </label>
+                        <label class="muscle-checkbox-label">
+                            <input type="checkbox" class="muscle-checkbox" value="Quads">
+                            <span>Quads</span>
+                        </label>
+                        <label class="muscle-checkbox-label">
+                            <input type="checkbox" class="muscle-checkbox" value="Hamstrings">
+                            <span>Hamstrings</span>
+                        </label>
+                        <label class="muscle-checkbox-label">
+                            <input type="checkbox" class="muscle-checkbox" value="Glutes">
+                            <span>Glutes</span>
+                        </label>
+                        <label class="muscle-checkbox-label">
+                            <input type="checkbox" class="muscle-checkbox" value="Calves">
+                            <span>Calves</span>
+                        </label>
+                        <label class="muscle-checkbox-label">
+                            <input type="checkbox" class="muscle-checkbox" value="Core">
+                            <span>Core</span>
+                        </label>
+                    </div>
+                    
+                    <div style="display: flex; gap: 8px;">
+                        <button class="action-btn success" onclick="saveWorkout()" style="flex: 1;">Save</button>
+                        <button class="action-btn danger" onclick="hideWorkoutForm()" style="flex: 1;">Cancel</button>
+                    </div>
+                </div>
+                
+                <div id="workoutsList"></div>
+            </div>
+        </div>
+
+        <!-- History Tab -->
+        <div id="historyTab" class="hidden">
+            <div class="workout-card">
+                <h3 style="color: #10b981; margin-bottom: 10px;">Workout History</h3>
+                <div id="historyContent"></div>
+            </div>
+        </div>
+
+        <!-- Progress Tab -->
+        <div id="progressTab" class="hidden">
+            <div class="workout-card">
+                <h3 style="color: #10b981; margin-bottom: 10px;">Progress Tracking</h3>
+                <div id="progressContent"></div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settingsTab" class="hidden">
+            <div class="workout-card">
+                <div id="settingsContent"></div>
+            </div>
+        </div>
+        
+        <!-- Custom Exercise Modal -->
+        <div id="customExerciseModal" class="hidden" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; padding: 20px; overflow-y: auto;">
+            <div style="max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937 0%, #374151 100%); border-radius: 10px; padding: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h2 style="color: #10b981; margin: 0;">Custom Exercises</h2>
+                    <button class="icon-btn" onclick="hideCustomExerciseManager()" style="width: 36px; height: 36px; font-size: 24px;">×</button>
+                </div>
+                
+                <!-- Create/Edit Form -->
+                <div id="customExerciseForm" class="hidden" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <h3 style="color: #10b981; margin-bottom: 10px; font-size: 16px;" id="customFormTitle">Create Custom Exercise</h3>
+                    
+                    <div style="position: relative; margin-bottom: 10px;">
+                        <input type="text" id="customExerciseName" placeholder="Exercise name..." class="search-input" 
+                               style="margin-bottom: 0;" oninput="filterExerciseNames()" onfocus="showExerciseNameDropdown()" autocomplete="off">
+                        <div id="exerciseNameDropdown" class="search-results hidden" style="position: absolute; top: 100%; left: 0; right: 0; max-height: 200px; overflow-y: auto; background: rgba(31, 41, 55, 0.98); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; margin-top: 4px; z-index: 100;"></div>
+                    </div>
+                    
+                    <div style="position: relative; margin-bottom: 10px;">
+                        <input type="text" id="customExerciseEquipment" placeholder="Search or type equipment..." class="search-input" 
+                               style="margin-bottom: 0;" oninput="filterEquipmentOptions()" onfocus="showEquipmentDropdown()" autocomplete="off">
+                        <div id="equipmentDropdown" class="search-results hidden" style="position: absolute; top: 100%; left: 0; right: 0; max-height: 200px; overflow-y: auto; background: rgba(31, 41, 55, 0.98); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; margin-top: 4px; z-index: 100;"></div>
+                    </div>
+                    
+                    <textarea id="customExerciseDescription" placeholder="Description (optional)..." class="search-input" style="min-height: 80px; resize: vertical; margin-bottom: 10px;"></textarea>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <label style="display: block; margin-bottom: 5px; font-size: 13px;">Muscle Groups:</label>
+                        <div class="muscle-checkbox-container">
+                            <label class="muscle-checkbox-label">
+                                <input type="checkbox" class="custom-muscle-checkbox" value="Chest">
+                                <span>Chest</span>
+                            </label>
+                            <label class="muscle-checkbox-label">
+                                <input type="checkbox" class="custom-muscle-checkbox" value="Back">
+                                <span>Back</span>
+                            </label>
+                            <label class="muscle-checkbox-label">
+                                <input type="checkbox" class="custom-muscle-checkbox" value="Shoulders">
+                                <span>Shoulders</span>
+                            </label>
+                            <label class="muscle-checkbox-label">
+                                <input type="checkbox" class="custom-muscle-checkbox" value="Rear Delts">
+                                <span>Rear Delts</span>
+                            </label>
+                            <label class="muscle-checkbox-label">
+                                <input type="checkbox" class="custom-muscle-checkbox" value="Biceps">
+                                <span>Biceps</span>
+                            </label>
+                            <label class="muscle-checkbox-label">
+                                <input type="checkbox" class="custom-muscle-checkbox" value="Triceps">
+                                <span>Triceps</span>
+                            </label>
+                            <label class="muscle-checkbox-label">
+                                <input type="checkbox" class="custom-muscle-checkbox" value="Quads">
+                                <span>Quads</span>
+                            </label>
+                            <label class="muscle-checkbox-label">
+                                <input type="checkbox" class="custom-muscle-checkbox" value="Hamstrings">
+                                <span>Hamstrings</span>
+                            </label>
+                            <label class="muscle-checkbox-label">
+                                <input type="checkbox" class="custom-muscle-checkbox" value="Glutes">
+                                <span>Glutes</span>
+                            </label>
+                            <label class="muscle-checkbox-label">
+                                <input type="checkbox" class="custom-muscle-checkbox" value="Calves">
+                                <span>Calves</span>
+                            </label>
+                            <label class="muscle-checkbox-label">
+                                <input type="checkbox" class="custom-muscle-checkbox" value="Core">
+                                <span>Core</span>
+                            </label>
+                            <label class="muscle-checkbox-label">
+                                <input type="checkbox" class="custom-muscle-checkbox" value="Legs">
+                                <span>Legs</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <label style="display: block; margin-bottom: 5px; font-size: 13px;">Difficulty:</label>
+                        <select id="customExerciseDifficulty" class="workout-dropdown" style="margin-bottom: 0;">
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                    </div>
+                    
+                    <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px; cursor: pointer;">
+                        <input type="checkbox" id="customExerciseIsBodyweight">
+                        <span style="font-size: 13px;">This is a bodyweight exercise</span>
+                    </label>
+                    
+                    <div style="display: flex; gap: 8px;">
+                        <button class="action-btn success" onclick="saveCustomExercise()" style="flex: 1;">Save</button>
+                        <button class="action-btn danger" onclick="cancelCustomExerciseForm()" style="flex: 1;">Cancel</button>
+                    </div>
+                </div>
+                
+                <!-- List of Custom Exercises -->
+                <div id="customExercisesList"></div>
+                
+                <button class="action-btn success" onclick="showCreateCustomExercise()" style="width: 100%; margin-top: 10px;">
+                    + Create New Exercise
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+(function() {
+    'use strict';
+    
+    // Global state
+    let appData = { workouts: {}, history: {}, settings: {}, activeWorkout: {}, customExercises: {} };
+    let exerciseDB = {};
+    let equipmentDB = {};
+    let activeExercises = [];
+    let currentWorkoutId = null;
+    let editingWorkoutId = null;
+    let workoutStartTime = null;
+    
+    // Timer state
+    let timeRemaining = 90;
+    let timerInterval = null;
+    let timerRunning = false;
+    
+    // Storage
+    function saveData() {
+        localStorage.setItem('jimTrackerData', JSON.stringify(appData));
+    }
+    
+    function loadData() {
+        const saved = localStorage.getItem('jimTrackerData');
+        if (saved) {
+            appData = JSON.parse(saved);
+            // Ensure customExercises exists
+            if (!appData.customExercises) {
+                appData.customExercises = {};
+            }
+        }
+    }
+    
+    function saveActiveWorkout() {
+        appData.activeWorkout = {
+            workoutId: currentWorkoutId,
+            exercises: activeExercises
+        };
+        saveData();
+    }
+    
+    function loadActiveWorkout() {
+        if (appData.activeWorkout && appData.activeWorkout.exercises) {
+            activeExercises = appData.activeWorkout.exercises;
+            currentWorkoutId = appData.activeWorkout.workoutId;
+            
+            if (currentWorkoutId && appData.workouts[currentWorkoutId]) {
+                document.getElementById('currentWorkoutName').textContent = appData.workouts[currentWorkoutId].name;
+            }
+        }
+    }
+    
+    // Database loading
+    async function loadDatabases() {
+        // Full embedded database
+        exerciseDB = {
+            'Barbell Bench Press': { muscleGroup: 'Chest', muscleGroups: ['Chest'], equipment: 'Olympic barbell, flat bench, safety rack', description: 'Horizontal chest press with barbell', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Olympic barbell, flat bench, safety rack'] },
+            'Dumbbell Bench Press': { muscleGroup: 'Chest', muscleGroups: ['Chest'], equipment: 'Dumbbells, flat bench', description: 'Horizontal chest press with dumbbells allowing greater range', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Dumbbells, flat bench'] },
+            'Incline Barbell Press': { muscleGroup: 'Chest', muscleGroups: ['Chest'], equipment: 'Olympic barbell, 30-45° bench, safety rack', description: 'Upper chest press targeting clavicular pecs', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Olympic barbell, 30-45° bench, safety rack'] },
+            'Incline Dumbbell Press': { muscleGroup: 'Chest', muscleGroups: ['Chest'], equipment: 'Dumbbells, 30-45° bench', description: 'Upper chest press with greater range', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Dumbbells, 30-45° bench'] },
+            'Decline Barbell Press': { muscleGroup: 'Chest', muscleGroups: ['Chest'], equipment: 'Olympic barbell, decline bench (-15° to -30°)', description: 'Lower chest press targeting sternal pecs', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['Olympic barbell, decline bench (-15° to -30°)'] },
+            'Decline Dumbbell Press': { muscleGroup: 'Chest', muscleGroups: ['Chest'], equipment: 'Dumbbells, decline bench (-15° to -30°)', description: 'Lower chest press with dumbbells', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['Dumbbells, decline bench (-15° to -30°)'] },
+            'Dumbbell Flys': { muscleGroup: 'Chest', muscleGroups: ['Chest'], equipment: 'Dumbbells, flat bench', description: 'Chest isolation with horizontal adduction', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Dumbbells, flat bench'] },
+            'Incline Dumbbell Flys': { muscleGroup: 'Chest', muscleGroups: ['Chest'], equipment: 'Dumbbells, 30-45° bench', description: 'Upper chest isolation with flyes', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Dumbbells, 30-45° bench'] },
+            'Cable Flys (Flat)': { muscleGroup: 'Chest', muscleGroups: ['Chest'], equipment: 'Dual cable machine with D-handles at shoulder height', description: 'Cable chest flyes with constant tension', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Dual cable machine with D-handles at shoulder height'] },
+            'Cable Flys (High-to-Low)': { muscleGroup: 'Chest', muscleGroups: ['Chest'], equipment: 'Dual cable machine with D-handles at highest setting', description: 'Upper-to-lower chest isolation', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Dual cable machine with D-handles at highest setting'] },
+            'Cable Flys (Low-to-High)': { muscleGroup: 'Chest', muscleGroups: ['Chest'], equipment: 'Dual cable machine with D-handles at lowest setting', description: 'Lower-to-upper chest isolation', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Dual cable machine with D-handles at lowest setting'] },
+            'Pec Deck': { muscleGroup: 'Chest', muscleGroups: ['Chest'], equipment: 'Pec deck machine with elbow pads or handles', description: 'Machine chest fly with fixed path', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Pec deck machine with elbow pads or handles'] },
+            'Chest Press Machine': { muscleGroup: 'Chest', muscleGroups: ['Chest'], equipment: 'Plate-loaded or selectorized chest press machine', description: 'Machine horizontal press with fixed path', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Plate-loaded or selectorized chest press machine'] },
+            'Push-ups': { muscleGroup: 'Chest', muscleGroups: ['Chest'], equipment: 'None (bodyweight)', description: 'Bodyweight chest and triceps press', difficulty: 'beginner', isBodyweight: true, equipmentVariations: ['None (bodyweight)'] },
+            'Dips (Chest)': { muscleGroup: 'Chest', muscleGroups: ['Chest'], equipment: 'Parallel bars, lean forward', description: 'Bodyweight chest dips with forward lean', difficulty: 'intermediate', isBodyweight: true, equipmentVariations: ['Parallel bars, lean forward'] },
+            'Deadlift': { muscleGroup: 'Back', muscleGroups: ['Back'], equipment: 'Olympic barbell, weight plates', description: 'Hip hinge movement lifting from floor', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['Olympic barbell, weight plates'] },
+            'Romanian Deadlift': { muscleGroup: 'Hamstrings', muscleGroups: ['Legs'], equipment: 'Olympic barbell or dumbbells', description: 'Hip hinge with minimal knee bend targeting hamstrings', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['Olympic barbell or dumbbells'] },
+            'Pull-ups': { muscleGroup: 'Back', muscleGroups: ['Back'], equipment: 'Pull-up bar', description: 'Bodyweight vertical pulling', difficulty: 'intermediate', isBodyweight: true, equipmentVariations: ['Pull-up bar'] },
+            'Chin-ups': { muscleGroup: 'Back', muscleGroups: ['Back'], equipment: 'Pull-up bar with underhand grip', description: 'Underhand grip vertical pulling', difficulty: 'intermediate', isBodyweight: true, equipmentVariations: ['Pull-up bar with underhand grip'] },
+            'Lat Pulldown (Wide)': { muscleGroup: 'Back', muscleGroups: ['Back'], equipment: 'Cable lat machine with wide bar attachment', description: 'Cable-based vertical pulling targeting lats', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable lat machine with wide bar attachment'] },
+            'Lat Pulldown (Close)': { muscleGroup: 'Back', muscleGroups: ['Back'], equipment: 'Cable machine with close-grip V-bar', description: 'Narrow grip cable pulldown', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable machine with close-grip V-bar'] },
+            'Bent-Over Barbell Row': { muscleGroup: 'Back', muscleGroups: ['Back'], equipment: 'Olympic barbell, weight plates', description: 'Hip-hinged horizontal row with barbell', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['Olympic barbell, weight plates'] },
+            'Pendlay Row': { muscleGroup: 'Back', muscleGroups: ['Back'], equipment: 'Olympic barbell touching floor each rep', description: 'Dead-stop barbell row from floor', difficulty: 'advanced', isBodyweight: false, equipmentVariations: ['Olympic barbell touching floor each rep'] },
+            'Dumbbell Row (Single-Arm)': { muscleGroup: 'Back', muscleGroups: ['Back'], equipment: 'Dumbbell, flat bench for support', description: 'Unilateral row with bench support', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Dumbbell, flat bench for support'] },
+            'Dumbbell Row (Two-Arm)': { muscleGroup: 'Back', muscleGroups: ['Back'], equipment: 'Dumbbells, bent-over stance', description: 'Bilateral bent-over row with dumbbells', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Dumbbells, bent-over stance'] },
+            'Chest-Supported Row': { muscleGroup: 'Back', muscleGroups: ['Back'], equipment: 'Incline bench (45°), dumbbells or barbell', description: 'Supported row reducing lower back strain', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Incline bench (45°), dumbbells or barbell'] },
+            'T-Bar Row': { muscleGroup: 'Back', muscleGroups: ['Back'], equipment: 'T-bar row machine or landmine attachment', description: 'Supported barbell row at angle', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['T-bar row machine or landmine attachment'] },
+            'Cable Row (Seated)': { muscleGroup: 'Back', muscleGroups: ['Back'], equipment: 'Cable machine with V-bar or straight bar attachment', description: 'Seated horizontal cable pull', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable machine with V-bar or straight bar attachment'] },
+            'Cable Row (Single-Arm)': { muscleGroup: 'Back', muscleGroups: ['Back'], equipment: 'Cable machine with D-handle', description: 'Unilateral cable row for balanced development', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable machine with D-handle'] },
+            'Machine Row': { muscleGroup: 'Back', muscleGroups: ['Back'], equipment: 'Plate-loaded or selectorized row machine', description: 'Horizontal pulling on fixed machine', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Plate-loaded or selectorized row machine'] },
+            'Meadows Row': { muscleGroup: 'Back', muscleGroups: ['Back'], equipment: 'Landmine attachment with single handle or T-bar', description: 'Single-arm landmine row', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['Landmine attachment with single handle or T-bar'] },
+            'Barbell Shrugs': { muscleGroup: 'Traps', muscleGroups: ['Back'], equipment: 'Olympic barbell, weight plates', description: 'Vertical shoulder elevation with barbell', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Olympic barbell, weight plates'] },
+            'Dumbbell Shrugs': { muscleGroup: 'Traps', muscleGroups: ['Back'], equipment: 'Heavy dumbbells', description: 'Trap development with dumbbells allowing natural path', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Heavy dumbbells'] },
+            'Cable Shrugs': { muscleGroup: 'Traps', muscleGroups: ['Back'], equipment: 'Cable machine with straight bar, lowest position', description: 'Constant tension trap shrugs', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable machine with straight bar, lowest position'] },
+            'Face Pulls': { muscleGroup: 'Rear Delts', muscleGroups: ['Back'], equipment: 'Cable machine with rope attachment at face height', description: 'Cable pull targeting rear delts and upper back', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable machine with rope attachment at face height'] },
+            'Squat (Back)': { muscleGroup: 'Quads', muscleGroups: ['Legs'], equipment: 'Olympic barbell, squat rack with safety bars, weight plates', description: 'Barbell on upper back, full depth squat', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['Olympic barbell, squat rack with safety bars, weight plates'] },
+            'Squat (Front)': { muscleGroup: 'Quads', muscleGroups: ['Legs'], equipment: 'Olympic barbell, squat rack with safety bars, weight plates', description: 'Barbell on front shoulders, upright torso squat', difficulty: 'advanced', isBodyweight: false, equipmentVariations: ['Olympic barbell, squat rack with safety bars, weight plates'] },
+            'Goblet Squat': { muscleGroup: 'Quads', muscleGroups: ['Legs'], equipment: 'Single dumbbell or kettlebell', description: 'Front-loaded squat held at chest', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Single dumbbell or kettlebell'] },
+            'Bulgarian Split Squat': { muscleGroup: 'Quads', muscleGroups: ['Legs'], equipment: 'Dumbbells, elevated surface (bench)', description: 'Single-leg squat with rear foot elevated', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['Dumbbells, elevated surface (bench)'] },
+            'Leg Press': { muscleGroup: 'Quads', muscleGroups: ['Legs'], equipment: '45° or horizontal leg press machine', description: 'Machine-based compound leg press', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['45° or horizontal leg press machine'] },
+            'Leg Extension': { muscleGroup: 'Quads', muscleGroups: ['Legs'], equipment: 'Leg extension machine with shin pad', description: 'Isolated quadriceps extension', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Leg extension machine with shin pad'] },
+            'Leg Curl (Lying)': { muscleGroup: 'Hamstrings', muscleGroups: ['Legs'], equipment: 'Lying leg curl machine with ankle pad', description: 'Isolated hamstring curl while prone', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Lying leg curl machine with ankle pad'] },
+            'Leg Curl (Seated)': { muscleGroup: 'Hamstrings', muscleGroups: ['Legs'], equipment: 'Seated leg curl machine with ankle pad', description: 'Hamstring curl in seated position', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Seated leg curl machine with ankle pad'] },
+            'Nordic Curls': { muscleGroup: 'Hamstrings', muscleGroups: ['Legs'], equipment: 'Ankle anchor (partner or machine)', description: 'Eccentric-focused hamstring exercise', difficulty: 'advanced', isBodyweight: true, equipmentVariations: ['Ankle anchor (partner or machine)'] },
+            'Walking Lunges': { muscleGroup: 'Quads', muscleGroups: ['Legs'], equipment: 'Dumbbells or bodyweight', description: 'Forward alternating lunge steps', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Dumbbells or bodyweight'] },
+            'Reverse Lunges': { muscleGroup: 'Quads', muscleGroups: ['Legs'], equipment: 'Dumbbells or bodyweight', description: 'Backward lunge reducing knee stress', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Dumbbells or bodyweight'] },
+            'Step-ups': { muscleGroup: 'Quads', muscleGroups: ['Legs'], equipment: 'Box or bench (12-20 inches), dumbbells optional', description: 'Single-leg step onto elevated surface', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Box or bench (12-20 inches), dumbbells optional'] },
+            'Hack Squat': { muscleGroup: 'Quads', muscleGroups: ['Legs'], equipment: 'Hack squat machine', description: 'Machine squat with back support', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Hack squat machine'] },
+            'Smith Machine Squat': { muscleGroup: 'Quads', muscleGroups: ['Legs'], equipment: 'Smith machine with vertical bar path', description: 'Guided barbell squat on fixed path', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Smith machine with vertical bar path'] },
+            'Hip Thrust': { muscleGroup: 'Glutes', muscleGroups: ['Legs'], equipment: 'Barbell with pad, flat bench', description: 'Hip extension movement targeting glutes', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Barbell with pad, flat bench'] },
+            'Glute Bridge': { muscleGroup: 'Glutes', muscleGroups: ['Legs'], equipment: 'Barbell with pad or bodyweight', description: 'Floor-based hip thrust', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Barbell with pad or bodyweight'] },
+            'Cable Pull-Through': { muscleGroup: 'Glutes', muscleGroups: ['Legs'], equipment: 'Cable machine with rope attachment, lowest position', description: 'Hip hinge using cable for glute activation', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable machine with rope attachment, lowest position'] },
+            'Standing Calf Raise': { muscleGroup: 'Calves', muscleGroups: ['Legs'], equipment: 'Standing calf raise machine or Smith machine', description: 'Straight-leg calf raise targeting gastrocnemius', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Standing calf raise machine or Smith machine'] },
+            'Seated Calf Raise': { muscleGroup: 'Calves', muscleGroups: ['Legs'], equipment: 'Seated calf raise machine with knee pad', description: 'Bent-knee calf raise targeting soleus', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Seated calf raise machine with knee pad'] },
+            'Military Press': { muscleGroup: 'Shoulders', muscleGroups: ['Shoulders'], equipment: 'Olympic barbell, squat rack with safety bars', description: 'Strict overhead press with feet together', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['Olympic barbell, squat rack with safety bars'] },
+            'Seated Barbell Press': { muscleGroup: 'Shoulders', muscleGroups: ['Shoulders'], equipment: 'Olympic barbell, 90° bench, squat rack', description: 'Seated overhead press for shoulder development', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['Olympic barbell, 90° bench, squat rack'] },
+            'Dumbbell Shoulder Press (Seated)': { muscleGroup: 'Shoulders', muscleGroups: ['Shoulders'], equipment: 'Dumbbells, 90° adjustable bench', description: 'Seated dumbbell press with back support', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Dumbbells, 90° adjustable bench'] },
+            'Dumbbell Shoulder Press (Standing)': { muscleGroup: 'Shoulders', muscleGroups: ['Shoulders'], equipment: 'Dumbbells only', description: 'Standing dumbbell press engaging core for stability', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Dumbbells only'] },
+            'Arnold Press': { muscleGroup: 'Shoulders', muscleGroups: ['Shoulders'], equipment: 'Dumbbells, optional bench', description: 'Rotating dumbbell press targeting all deltoid heads', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['Dumbbells, optional bench'] },
+            'Push Press': { muscleGroup: 'Shoulders', muscleGroups: ['Shoulders'], equipment: 'Olympic barbell with leg drive momentum', description: 'Overhead press with slight leg drive assistance', difficulty: 'advanced', isBodyweight: false, equipmentVariations: ['Olympic barbell with leg drive momentum'] },
+            'Dumbbell Lateral Raise': { muscleGroup: 'Shoulders', muscleGroups: ['Shoulders'], equipment: 'Light to moderate dumbbells', description: 'Side raises targeting medial deltoids', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Light to moderate dumbbells'] },
+            'Cable Lateral Raise': { muscleGroup: 'Shoulders', muscleGroups: ['Shoulders'], equipment: 'Cable machine with D-handle, lowest position', description: 'Cable lateral raises with constant tension', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable machine with D-handle, lowest position'] },
+            'Leaning Cable Lateral Raise': { muscleGroup: 'Shoulders', muscleGroups: ['Shoulders'], equipment: 'Cable machine with D-handle, support anchor', description: 'Lateral raises while leaning for increased range', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['Cable machine with D-handle, support anchor'] },
+            'Machine Lateral Raise': { muscleGroup: 'Shoulders', muscleGroups: ['Shoulders'], equipment: 'Lateral raise machine with arm pads', description: 'Machine lateral raises for controlled movement', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Lateral raise machine with arm pads'] },
+            'Barbell Front Raise': { muscleGroup: 'Shoulders', muscleGroups: ['Shoulders'], equipment: 'Olympic barbell or EZ-curl bar', description: 'Front raises with barbell targeting anterior delts', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Olympic barbell or EZ-curl bar'] },
+            'Dumbbell Front Raise': { muscleGroup: 'Shoulders', muscleGroups: ['Shoulders'], equipment: 'Dumbbells (alternating or simultaneous)', description: 'Front raises with dumbbells for anterior deltoid isolation', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Dumbbells (alternating or simultaneous)'] },
+            'Cable Front Raise': { muscleGroup: 'Shoulders', muscleGroups: ['Shoulders'], equipment: 'Cable machine with straight bar or D-handle, lowest position', description: 'Cable front raises with constant tension', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable machine with straight bar or D-handle, lowest position'] },
+            'Bent-Over Rear Delt Fly': { muscleGroup: 'Rear Delts', muscleGroups: ['Back'], equipment: 'Dumbbells, optional chest support bench', description: 'Bent-over flyes targeting posterior deltoids', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Dumbbells, optional chest support bench'] },
+            'Cable Rear Delt Fly': { muscleGroup: 'Rear Delts', muscleGroups: ['Back'], equipment: 'Cable machine with D-handle at head height', description: 'Cable flyes targeting rear deltoids', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable machine with D-handle at head height'] },
+            'Reverse Pec Deck': { muscleGroup: 'Rear Delts', muscleGroups: ['Back'], equipment: 'Pec deck machine in reverse position', description: 'Machine reverse fly for rear deltoid isolation', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Pec deck machine in reverse position'] },
+            'Upright Row': { muscleGroup: 'Shoulders', muscleGroups: ['Shoulders'], equipment: 'Olympic barbell, EZ-bar, or dumbbells', description: 'Upright rowing motion targeting delts and traps', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['Olympic barbell, EZ-bar, or dumbbells'] },
+            'Barbell Curls': { muscleGroup: 'Biceps', muscleGroups: ['Arms'], equipment: 'Olympic barbell, weight plates', description: 'Standing barbell curls for bicep mass development', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Olympic barbell, weight plates'] },
+            'EZ-Bar Curls': { muscleGroup: 'Biceps', muscleGroups: ['Arms'], equipment: 'EZ-curl bar, weight plates', description: 'Curls with angled bar reducing wrist strain', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['EZ-curl bar, weight plates'] },
+            'Preacher Curls': { muscleGroup: 'Biceps', muscleGroups: ['Arms'], equipment: 'Preacher bench, EZ-bar or dumbbells', description: 'Bicep curls with arm support isolating biceps', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Preacher bench, EZ-bar or dumbbells'] },
+            'Hammer Curls': { muscleGroup: 'Biceps', muscleGroups: ['Arms'], equipment: 'Dumbbells with neutral grip', description: 'Neutral grip curls targeting biceps and brachialis', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Dumbbells with neutral grip'] },
+            'Incline Dumbbell Curls': { muscleGroup: 'Biceps', muscleGroups: ['Arms'], equipment: 'Dumbbells, incline bench (45-60°)', description: 'Incline curls targeting long head of biceps', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Dumbbells, incline bench (45-60°)'] },
+            'Concentration Curls': { muscleGroup: 'Biceps', muscleGroups: ['Arms'], equipment: 'Single dumbbell, flat bench', description: 'Isolated single-arm bicep curls with strict form', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Single dumbbell, flat bench'] },
+            'Cable Curls (Straight Bar)': { muscleGroup: 'Biceps', muscleGroups: ['Arms'], equipment: 'Cable machine with straight bar, lowest position', description: 'Cable curls with constant tension throughout range', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable machine with straight bar, lowest position'] },
+            'Cable Curls (Rope)': { muscleGroup: 'Biceps', muscleGroups: ['Arms'], equipment: 'Cable machine with rope attachment, lowest position', description: 'Cable curls with rope allowing wrist rotation', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable machine with rope attachment, lowest position'] },
+            'Single-Arm Cable Curls': { muscleGroup: 'Biceps', muscleGroups: ['Arms'], equipment: 'Cable machine with D-handle, lowest position', description: 'Unilateral cable curls for balanced development', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable machine with D-handle, lowest position'] },
+            'Tricep Pushdowns (Straight Bar)': { muscleGroup: 'Triceps', muscleGroups: ['Arms'], equipment: 'Cable machine with straight bar, highest position', description: 'Cable pushdowns targeting all three tricep heads', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable machine with straight bar, highest position'] },
+            'Tricep Pushdowns (Rope)': { muscleGroup: 'Triceps', muscleGroups: ['Arms'], equipment: 'Cable machine with rope attachment, highest position', description: 'Rope pushdowns allowing wrist separation at bottom', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable machine with rope attachment, highest position'] },
+            'Tricep Pushdowns (V-Bar)': { muscleGroup: 'Triceps', muscleGroups: ['Arms'], equipment: 'Cable machine with V-bar attachment, highest position', description: 'V-bar pushdowns for tricep isolation', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable machine with V-bar attachment, highest position'] },
+            'Overhead Cable Extension': { muscleGroup: 'Triceps', muscleGroups: ['Arms'], equipment: 'Cable machine with rope, lowest position', description: 'Overhead extension targeting tricep long head', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable machine with rope, lowest position'] },
+            'Skull Crushers': { muscleGroup: 'Triceps', muscleGroups: ['Arms'], equipment: 'EZ-curl bar, flat bench', description: 'Lying tricep extensions isolating triceps', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['EZ-curl bar, flat bench'] },
+            'Seated Dumbbell Extension': { muscleGroup: 'Triceps', muscleGroups: ['Arms'], equipment: 'Single dumbbell, 90° bench', description: 'Overhead extension with dumbbell targeting long head', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Single dumbbell, 90° bench'] },
+            'Tricep Dips': { muscleGroup: 'Triceps', muscleGroups: ['Arms'], equipment: 'Parallel dip bars', description: 'Bodyweight dips emphasizing tricep development', difficulty: 'intermediate', isBodyweight: true, equipmentVariations: ['Parallel dip bars'] },
+            'Tricep Kickbacks': { muscleGroup: 'Triceps', muscleGroups: ['Arms'], equipment: 'Dumbbells, flat bench for support', description: 'Bent-over tricep extensions with dumbbells', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Dumbbells, flat bench for support'] },
+            'Planks': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Exercise mat', description: 'Isometric hold in push-up position targeting core stability', difficulty: 'beginner', isBodyweight: true, equipmentVariations: ['Exercise mat'] },
+            'Side Planks': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Exercise mat', description: 'Lateral plank targeting obliques', difficulty: 'beginner', isBodyweight: true, equipmentVariations: ['Exercise mat'] },
+            'Weighted Planks': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Weight plate (25-45 lbs) on back', description: 'Plank with added weight for increased difficulty', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['Weight plate (25-45 lbs) on back'] },
+            'Bicycle Crunches': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Exercise mat', description: 'Alternating crunch with knee-to-elbow motion', difficulty: 'beginner', isBodyweight: true, equipmentVariations: ['Exercise mat'] },
+            'Basic Crunches': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Exercise mat', description: 'Traditional abdominal crunch movement', difficulty: 'beginner', isBodyweight: true, equipmentVariations: ['Exercise mat'] },
+            'Sit-ups': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Mat, optional foot anchor', description: 'Full range abdominal exercise from floor to sitting', difficulty: 'beginner', isBodyweight: true, equipmentVariations: ['Mat, optional foot anchor'] },
+            'V-ups': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Exercise mat', description: 'Simultaneous leg and torso raise forming V-shape', difficulty: 'intermediate', isBodyweight: true, equipmentVariations: ['Exercise mat'] },
+            'Leg Raises (Lying)': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Mat or bench', description: 'Lying leg raises targeting lower abdominals', difficulty: 'beginner', isBodyweight: true, equipmentVariations: ['Mat or bench'] },
+            'Hanging Leg Raises': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Pull-up bar or captain\'s chair', description: 'Hanging leg raises for advanced core strength', difficulty: 'advanced', isBodyweight: true, equipmentVariations: ['Pull-up bar or captain\'s chair'] },
+            'Russian Twists': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Optional medicine ball/weight plate', description: 'Seated torso rotation targeting obliques', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Optional medicine ball/weight plate'] },
+            'Cable Wood Chops': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Cable machine with D-handle attachment', description: 'Rotational movement using cable for obliques', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['Cable machine with D-handle attachment'] },
+            'Cable Crunches': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Cable machine with rope attachment (high pulley)', description: 'Kneeling crunches using cable resistance', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable machine with rope attachment (high pulley)'] },
+            'Cable Side Bends': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Cable machine with D-handle (low pulley)', description: 'Lateral flexion using cable resistance', difficulty: 'beginner', isBodyweight: false, equipmentVariations: ['Cable machine with D-handle (low pulley)'] },
+            'Dead Bugs': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Exercise mat', description: 'Supine core stability exercise with alternating limbs', difficulty: 'beginner', isBodyweight: true, equipmentVariations: ['Exercise mat'] },
+            'Bird Dogs': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Exercise mat', description: 'Quadruped stability exercise extending opposite limbs', difficulty: 'beginner', isBodyweight: true, equipmentVariations: ['Exercise mat'] },
+            'Pallof Press': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Cable machine with D-handle or resistance band', description: 'Anti-rotation exercise holding cable at chest', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['Cable machine with D-handle or resistance band'] },
+            'Mountain Climbers': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Exercise mat', description: 'Dynamic plank with alternating knee drives', difficulty: 'intermediate', isBodyweight: true, equipmentVariations: ['Exercise mat'] },
+            'Ab Wheel Rollouts': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Ab wheel with handles', description: 'Advanced core exercise rolling wheel away from body', difficulty: 'advanced', isBodyweight: false, equipmentVariations: ['Ab wheel with handles'] },
+            'Med Ball V-ups': { muscleGroup: 'Core', muscleGroups: ['Core'], equipment: 'Medicine ball (6-15 lbs)', description: 'V-ups holding medicine ball for added resistance', difficulty: 'intermediate', isBodyweight: false, equipmentVariations: ['Medicine ball (6-15 lbs)'] }
+        };
+        
+        equipmentDB = {};
+        
+        // Merge custom exercises into the main database
+        if (appData.customExercises) {
+            Object.assign(exerciseDB, appData.customExercises);
+        }
+        
+        console.log('Full embedded database loaded:', Object.keys(exerciseDB).length, 'exercises');
+        console.log('Custom exercises:', Object.keys(appData.customExercises || {}).length);
+    }
+    
+    // Initialize
+    async function init() {
+        loadData();
+        await loadDatabases();
+        updateWeekInfo();
+        updateWorkoutDropdowns();
+        loadActiveWorkout();
+        showWorkoutsList();
+        updateSummary();
+        
+        // Check if there's an active workout session
+        if (currentWorkoutId || activeExercises.length > 0) {
+            showActiveWorkoutInterface();
+        }
+    }
+    
+    function updateWeekInfo() {
+        const now = new Date();
+        const start = new Date(now.getFullYear(), 0, 1);
+        const diff = now - start;
+        const oneWeek = 604800000;
+        const week = Math.ceil(diff / oneWeek);
+        document.getElementById('weekInfo').textContent = 
+            `Week ${week} • ${now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}`;
+    }
+    
+    // Tab navigation
+    function showTab(tabName) {
+        const tabs = ['workout', 'workouts', 'history', 'progress', 'settings'];
+        tabs.forEach(tab => {
+            document.getElementById(`${tab}Tab`).classList.toggle('hidden', tab !== tabName);
+            const btn = document.querySelector(`.nav-btn[onclick="showTab('${tab}')"]`);
+            if (btn) btn.classList.toggle('active', tab === tabName);
+        });
+        
+        if (tabName === 'workouts') showWorkoutsList();
+        if (tabName === 'history') showHistory();
+        if (tabName === 'progress') showProgress();
+        if (tabName === 'settings') showSettings();
+    }
+    window.showTab = showTab;
+    
+    // Timer functions
+    function toggleTimer() {
+        const content = document.getElementById('timerContent');
+        const icon = document.getElementById('timerToggleIcon');
+        content.classList.toggle('hidden');
+        icon.textContent = content.classList.contains('hidden') ? '▼' : '▲';
+    }
+    window.toggleTimer = toggleTimer;
+    
+    function updateTimerDisplay() {
+        const mins = Math.floor(timeRemaining / 60);
+        const secs = timeRemaining % 60;
+        const display = document.getElementById('timerDisplay');
+        display.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        
+        display.classList.remove('warning', 'danger');
+        if (timeRemaining <= 10) display.classList.add('danger');
+        else if (timeRemaining <= 30) display.classList.add('warning');
+    }
+    
+    function startTimer() {
+        if (timeRemaining <= 0) {
+            timeRemaining = 90;
+        }
+        
+        if (timerRunning) {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            document.getElementById('startBtn').textContent = 'Start';
+            document.getElementById('startBtn').classList.remove('stop');
+            document.getElementById('startBtn').classList.add('start');
+            return;
+        }
+        
+        timerRunning = true;
+        document.getElementById('startBtn').textContent = 'Stop';
+        document.getElementById('startBtn').classList.remove('start');
+        document.getElementById('startBtn').classList.add('stop');
+        
+        timerInterval = setInterval(() => {
+            timeRemaining--;
+            updateTimerDisplay();
+            
+            if (timeRemaining <= 0) {
+                clearInterval(timerInterval);
+                timerRunning = false;
+                document.getElementById('startBtn').textContent = 'Start';
+                document.getElementById('startBtn').classList.remove('stop');
+                document.getElementById('startBtn').classList.add('start');
+                
+                if ('vibrate' in navigator) {
+                    navigator.vibrate([200, 100, 200]);
+                }
+                
+                const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTGH0fPTgjMGHm7A7+OZUR0MUKXh8LljHAU4kdfy0HYrBSl+zPLaizsIGGS57+mjVBcLTaXe8L5pIgQ1i9Xx0nwvBSF1xu/hlkQOFVy26+mrWBULTKLd8cBoIwU2jdXx0n0wBSaAze/emUIKFGC56+mrWRQLTKLd8cFoIgQ2jdXx03opBCp/zO/dmUIOFVy16+mtWhQLS6Hc8cRoJAQ2jdXx0n0wBSaAze/emUIKFGC56+mrWBULTKLd8cBqIgQ2jdXy0HopBCp/zO/dmUIOFVy16+mtWhQLS6Hc8cRoJAQ2jdXx0n0wBSaAze/emUIKFGC56+mrWBULTKLd8cBqIgQ2jdXy0HopBCp/zO/dmUIOFVy16+mtWhQLS6Hc8cRoJAQ2jdXx0n0wBSaAze/emUIKFGC56+mrWBULTKLd8cBqIgQ2jdXy0HopBCp/zO/dmUIOFVy16+mtWhQLS6Hc8cRoJAQ2jdXx0n0wBSaAze/emUIKFGC56+mrWBULTKLd8cBqIgQ2jdXy0HopBCp/zO/dmUIOFVy16+mtWhQLS6Hc8cRoJAQ2jdXx0n0wBSaAze/emUIKFGC56+mrWBULTKLd8cBqIgQ2jdXy0HopBCp/zO/dmUIOFVy16+mtWhQLS6Hc8cRoJAQ2jdXx0n0wBSaAze/emUIKFGC56+mrWBULTKLd8cBqIgQ2jdXy0HopBCp/zO/dmUIOFVy16+mtWhQLS6Hc8cRoJAQ2jdXx0n0wBSaAze/emUIKFGC56+mrWBULTKLd8cBqIgQ2jdXy0HopBCp/zO/dmUIOFVy16+mtWhQLS6Hc8cRoJAQ2jdXx0n0wBSaAze/emUIKFGC56+mrWBULTKLd8cBqIgQ2jdXy0HopBCp/zO/dmUIOFVy16+mtWhQLS6Hc8cRoJAQ2jdXx0n0wBSaAze/emUIKFGC56+mrWBULTKLd8cBqIgQ2jdXy0HopBCp/zO/dmUIOFVy16+mtWhQLS6Hc8cRoJAQ2jdXx0n0wBSaAze/emUIKFGC56+mrWBULTKLd8cBqIgQ2jdXy0HopBCp/zO/dmUIOFVy16+mtWhQLS6Hc8cRoJAQ=');
+                audio.play().catch(() => {});
+            }
+        }, 1000);
+    }
+    window.startTimer = startTimer;
+    
+    function adjustTimer(seconds) {
+        timeRemaining = Math.max(0, timeRemaining + seconds);
+        updateTimerDisplay();
+    }
+    window.adjustTimer = adjustTimer;
+    
+    function setTimer(seconds) {
+        timeRemaining = seconds;
+        updateTimerDisplay();
+        document.querySelectorAll('.time-preset').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+    window.setTimer = setTimer;
+    
+    function resetTimer() {
+        if (timerRunning) {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            document.getElementById('startBtn').textContent = 'Start';
+            document.getElementById('startBtn').classList.remove('stop');
+            document.getElementById('startBtn').classList.add('start');
+        }
+        timeRemaining = 90;
+        updateTimerDisplay();
+        document.querySelectorAll('.time-preset').forEach(btn => btn.classList.remove('active'));
+    }
+    window.resetTimer = resetTimer;
+    
+    // Workout dropdown functions
+    function updateWorkoutDropdowns() {
+        const selects = [document.getElementById('workoutSelectStart')];
+        const workouts = Object.entries(appData.workouts || {});
+        
+        selects.forEach(select => {
+            if (!select) return;
+            const currentValue = select.value;
+            select.innerHTML = '<option value="">Select a workout...</option>' + 
+                workouts.map(([id, w]) => 
+                    `<option value="${id}">${w.name}</option>`
+                ).join('');
+            if (currentValue) select.value = currentValue;
+        });
+    }
+    
+    // Start a workout session
+    function startWorkoutSession() {
+        const select = document.getElementById('workoutSelectStart');
+        const workoutId = select.value;
+        
+        if (!workoutId) {
+            alert('Please select a workout!');
+            return;
+        }
+        
+        const workout = appData.workouts[workoutId];
+        if (!workout) {
+            alert('Workout not found!');
+            return;
+        }
+        
+        // Check if bodyweight is set and remind user
+        const currentBodyweight = parseFloat(appData.settings?.bodyWeight);
+        if (!currentBodyweight) {
+            const setBW = confirm('⚠️ No bodyweight set!\n\nFor accurate tracking of bodyweight exercises (pull-ups, push-ups, dips, etc.), set your bodyweight in Settings.\n\nContinue without setting bodyweight?');
+            if (!setBW) {
+                showTab('settings');
+                return;
+            }
+        }
+        
+        currentWorkoutId = workoutId;
+        workoutStartTime = Date.now(); // Start duration tracking
+        document.getElementById('currentWorkoutName').textContent = workout.name;
+        
+        // Show appropriate exercises based on muscle groups
+        if (workout.muscleGroups && workout.muscleGroups.length > 0) {
+            const matchingExercises = Object.entries(exerciseDB)
+                .filter(([_, ex]) => {
+                    const exMuscles = ex.muscleGroups || (ex.muscleGroup ? [ex.muscleGroup] : []);
+                    return exMuscles.some(m => workout.muscleGroups.includes(m));
+                })
+                .slice(0, 10);
+            
+            if (matchingExercises.length > 0) {
+                displaySearchResults(matchingExercises);
+                document.getElementById('searchResults').classList.remove('hidden');
+            }
+        }
+        
+        showActiveWorkoutInterface();
+        saveActiveWorkout();
+    }
+    window.startWorkoutSession = startWorkoutSession;
+    
+    function showActiveWorkoutInterface() {
+        document.getElementById('workoutSelection').classList.add('hidden');
+        document.getElementById('activeWorkoutInterface').classList.remove('hidden');
+        renderExerciseList();
+        updateSummary();
+    }
+    
+    function endWorkoutSession() {
+        if (!confirm('⚠️ End workout and discard all data?\n\nAll exercises and sets will be deleted. This cannot be undone.')) return;
+        
+        // Clear all exercises
+        activeExercises = [];
+        currentWorkoutId = null;
+        workoutStartTime = null; // Reset duration tracking
+        
+        // Update UI
+        document.getElementById('workoutSelection').classList.remove('hidden');
+        document.getElementById('activeWorkoutInterface').classList.add('hidden');
+        document.getElementById('workoutSelectStart').value = '';
+        document.getElementById('exerciseSearch').value = '';
+        document.getElementById('searchResults').classList.add('hidden');
+        document.getElementById('exerciseList').innerHTML = '';
+        
+        // Clear saved active workout from storage
+        appData.activeWorkout = {};
+        saveData();
+        
+        updateSummary();
+    }
+    window.endWorkoutSession = endWorkoutSession;
+    
+    // Exercise search
+    function searchExercises() {
+        const query = document.getElementById('exerciseSearch').value.trim().toLowerCase();
+        const results = document.getElementById('searchResults');
+        
+        if (!query) {
+            results.classList.add('hidden');
+            return;
+        }
+        
+        const matches = Object.entries(exerciseDB).filter(([name, _]) => 
+            name.toLowerCase().includes(query)
+        );
+        
+        displaySearchResults(matches);
+        results.classList.remove('hidden');
+    }
+    window.searchExercises = searchExercises;
+    
+    function displaySearchResults(exercises) {
+        const results = document.getElementById('searchResults');
+        
+        if (exercises.length === 0) {
+            results.innerHTML = '<div style="padding: 15px; text-align: center; opacity: 0.7;">No exercises found</div>';
+            return;
+        }
+        
+        results.innerHTML = exercises.slice(0, 20).map(([name, ex]) => {
+            const muscles = ex.muscleGroups || (ex.muscleGroup ? [ex.muscleGroup] : []);
+            const muscleText = muscles.length > 0 ? muscles.join(', ') : 'No muscle groups';
+            
+            const difficultyColor = {
+                'beginner': '#10b981',
+                'intermediate': '#f59e0b',
+                'advanced': '#ef4444'
+            }[ex.difficulty] || '#6b7280';
+            
+            return `
+                <div class="search-result" data-exercise-name="${name.replace(/"/g, '&quot;')}">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 3px;">
+                        <div style="font-weight: 600; flex: 1;">
+                            ${name}
+                            ${ex.isCustom ? '<span style="font-size: 10px; padding: 2px 6px; border-radius: 10px; background: rgba(59, 130, 246, 0.2); color: #60a5fa; margin-left: 4px;">CUSTOM</span>' : ''}
+                        </div>
+                        <div style="font-size: 10px; padding: 2px 6px; border-radius: 10px; background: rgba(255,255,255,0.1); color: ${difficultyColor};">
+                            ${ex.difficulty || 'beginner'}
+                        </div>
+                    </div>
+                    <div style="font-size: 11px; opacity: 0.7; margin-bottom: 2px;">
+                        ${muscleText}
+                    </div>
+                    <div style="font-size: 11px; opacity: 0.6;">
+                        🔧 ${ex.equipment || 'No equipment specified'}
+                    </div>
+                    ${ex.description ? `<div style="font-size: 10px; opacity: 0.5; margin-top: 3px; font-style: italic;">${ex.description.substring(0, 80)}${ex.description.length > 80 ? '...' : ''}</div>` : ''}
+                </div>
+            `;
+        }).join('');
+        
+        // Add event delegation for search results
+        results.querySelectorAll('.search-result').forEach(result => {
+            result.addEventListener('click', function() {
+                const exerciseName = this.getAttribute('data-exercise-name');
+                selectExercise(exerciseName);
+            });
+        });
+    }
+    
+    function selectExercise(name) {
+        const exercise = exerciseDB[name];
+        if (!exercise) {
+            console.error('Exercise not found:', name);
+            return;
+        }
+        
+        console.log('Selecting exercise:', name, exercise);
+        addExerciseToWorkout(name, exercise.equipment || 'None');
+    }
+    window.selectExercise = selectExercise;
+    
+    function addExerciseToWorkout(name, equipment) {
+        console.log('addExerciseToWorkout called:', name, equipment);
+        
+        const existingIndex = activeExercises.findIndex(ex => 
+            ex.name === name && ex.equipment === equipment
+        );
+        
+        if (existingIndex !== -1) {
+            alert('Exercise already added!');
+            return;
+        }
+        
+        // Find the last time this exercise was performed
+        const history = Object.values(appData.history || {}).sort((a, b) => 
+            new Date(b.date) - new Date(a.date)
+        );
+        
+        let previousSets = [];
+        for (const workout of history) {
+            const previousExercise = workout.exercises?.find(ex => ex.name === name);
+            if (previousExercise && previousExercise.sets && previousExercise.sets.length > 0) {
+                // Found it! Use the sets from last time
+                previousSets = previousExercise.sets.map(set => ({
+                    weight: set.weight || '',
+                    reps: set.reps || ''
+                }));
+                break;
+            }
+        }
+        
+        // If no previous data found, start with one empty set
+        if (previousSets.length === 0) {
+            previousSets = [{ weight: '', reps: '' }];
+        }
+        
+        const newExercise = {
+            id: Date.now(),
+            name: name,
+            equipment: equipment,
+            sets: previousSets,
+            collapsed: false
+        };
+        
+        activeExercises.push(newExercise);
+        console.log('Exercise added. Active exercises:', activeExercises);
+        
+        document.getElementById('exerciseSearch').value = '';
+        document.getElementById('searchResults').classList.add('hidden');
+        document.getElementById('workoutSelectStart').value = '';
+        
+        renderExerciseList();
+        updateSummary();
+        saveActiveWorkout();
+    }
+    window.addExerciseToWorkout = addExerciseToWorkout;
+    
+    function renderExerciseList() {
+        const container = document.getElementById('exerciseList');
+        
+        if (activeExercises.length === 0) {
+            container.innerHTML = '';
+            return;
+        }
+        
+        const currentBodyweight = parseFloat(appData.settings?.bodyWeight) || null;
+        
+        container.innerHTML = activeExercises.map(ex => {
+            const history = getExerciseHistory(ex.name, ex.equipment);
+            const hasHistory = history.length > 0;
+            const exerciseData = exerciseDB[ex.name];
+            const isBodyweight = exerciseData?.isBodyweight || false;
+            
+            return `
+                <div class="exercise-item">
+                    <div class="exercise-header" data-action="toggle-collapse" data-exercise-id="${ex.id}">
+                        <div>
+                            <div class="exercise-name">${ex.name}</div>
+                            <div style="font-size: 11px; opacity: 0.7;">
+                                ${ex.equipment}
+                                ${isBodyweight ? ' • <span style="color: #10b981;">Bodyweight</span>' : ''}
+                                ${isBodyweight && currentBodyweight ? ` • ${currentBodyweight} lbs` : ''}
+                                ${isBodyweight && !currentBodyweight ? ' • <span style="color: #f59e0b;">Set bodyweight in settings</span>' : ''}
+                            </div>
+                        </div>
+                        <div class="exercise-actions">
+                            <button class="icon-btn" data-action="remove-exercise" data-exercise-id="${ex.id}">×</button>
+                            <span style="opacity: 0.5; font-size: 14px;">${ex.collapsed ? '▼' : '▲'}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise-content" style="display: ${ex.collapsed ? 'none' : 'block'};">
+                        <div id="sets-${ex.id}">
+                            ${ex.sets.map((set, idx) => {
+                                const addedWeight = parseFloat(set.weight) || 0;
+                                const totalWeight = isBodyweight && currentBodyweight ? addedWeight + currentBodyweight : addedWeight;
+                                
+                                return `
+                                <div class="set-row">
+                                    <div class="set-number">${idx + 1}</div>
+                                    <input type="number" 
+                                           class="exercise-input" 
+                                           placeholder="${isBodyweight ? '+lbs' : 'lbs'}" 
+                                           value="${set.weight || ''}"
+                                           data-action="update-set"
+                                           data-exercise-id="${ex.id}"
+                                           data-set-index="${idx}"
+                                           data-field="weight"
+                                           min="0"
+                                           step="2.5"
+                                           title="${isBodyweight && currentBodyweight ? `Total: ${totalWeight} lbs (${currentBodyweight} + ${addedWeight})` : ''}">
+                                    <input type="number" 
+                                           class="exercise-input" 
+                                           placeholder="reps" 
+                                           value="${set.reps || ''}"
+                                           data-action="update-set"
+                                           data-exercise-id="${ex.id}"
+                                           data-set-index="${idx}"
+                                           data-field="reps"
+                                           min="0"
+                                           step="1">
+                                    <button class="set-btn" data-action="remove-set" data-exercise-id="${ex.id}" data-set-index="${idx}">×</button>
+                                </div>
+                            `}).join('')}
+                        </div>
+                        ${isBodyweight && currentBodyweight ? `
+                            <div style="font-size: 11px; opacity: 0.7; margin-top: 6px; padding: 6px; background: rgba(16, 185, 129, 0.1); border-radius: 6px;">
+                                💡 Weight field is for added weight (e.g., weighted vest, dip belt). Total = ${currentBodyweight} lbs + added weight.
+                            </div>
+                        ` : ''}
+                        <button class="action-btn success" data-action="add-set" data-exercise-id="${ex.id}" style="width: 100%; margin-top: 8px;">
+                            + Add Set
+                        </button>
+                        ${hasHistory ? `
+                            <div class="history-section" id="history-${ex.id}">
+                                <div class="history-toggle" data-action="toggle-history" data-exercise-id="${ex.id}">
+                                    <span>📊 Previous Sessions</span>
+                                    <span id="history-icon-${ex.id}">▼</span>
+                                </div>
+                                <div id="history-content-${ex.id}" style="display: none;">
+                                    ${history.slice(0, 3).map(h => {
+                                        const workoutBW = h.bodyweight || null;
+                                        return `
+                                        <div class="history-entry">
+                                            <div style="font-weight: 600; margin-bottom: 2px;">
+                                                ${new Date(h.date).toLocaleDateString()}
+                                                ${workoutBW ? ` • BW: ${workoutBW} lbs` : ''}
+                                            </div>
+                                            ${h.sets.map((s, i) => {
+                                                const setWeight = parseFloat(s.weight) || 0;
+                                                const actualWeight = s.actualWeight || setWeight;
+                                                const displayText = isBodyweight && workoutBW ? 
+                                                    `Set ${i+1}: ${actualWeight}lbs (${workoutBW}+${setWeight}) × ${s.reps} reps` :
+                                                    `Set ${i+1}: ${setWeight}lbs × ${s.reps} reps`;
+                                                return `<div style="font-size: 11px;">${displayText}</div>`;
+                                            }).join('')}
+                                        </div>
+                                    `}).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+        // Add event delegation for all exercise interactions
+        container.querySelectorAll('[data-action]').forEach(element => {
+            const action = element.getAttribute('data-action');
+            
+            if (action === 'toggle-collapse') {
+                element.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-exercise-id'));
+                    toggleExerciseCollapse(id);
+                });
+            } else if (action === 'remove-exercise') {
+                element.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const id = parseInt(this.getAttribute('data-exercise-id'));
+                    removeExercise(id);
+                });
+            } else if (action === 'update-set') {
+                element.addEventListener('change', function() {
+                    const exerciseId = parseInt(this.getAttribute('data-exercise-id'));
+                    const setIndex = parseInt(this.getAttribute('data-set-index'));
+                    const field = this.getAttribute('data-field');
+                    updateSet(exerciseId, setIndex, field, this.value);
+                });
+            } else if (action === 'remove-set') {
+                element.addEventListener('click', function() {
+                    const exerciseId = parseInt(this.getAttribute('data-exercise-id'));
+                    const setIndex = parseInt(this.getAttribute('data-set-index'));
+                    removeSet(exerciseId, setIndex);
+                });
+            } else if (action === 'add-set') {
+                element.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-exercise-id'));
+                    addSet(id);
+                });
+            } else if (action === 'toggle-history') {
+                element.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-exercise-id'));
+                    toggleHistory(id);
+                });
+            }
+        });
+    }
+    
+    function toggleExerciseCollapse(id) {
+        const exercise = activeExercises.find(ex => ex.id === id);
+        if (exercise) {
+            exercise.collapsed = !exercise.collapsed;
+            renderExerciseList();
+            saveActiveWorkout();
+        }
+    }
+    window.toggleExerciseCollapse = toggleExerciseCollapse;
+    
+    function toggleHistory(id) {
+        const content = document.getElementById(`history-content-${id}`);
+        const icon = document.getElementById(`history-icon-${id}`);
+        if (content && icon) {
+            const isHidden = content.style.display === 'none';
+            content.style.display = isHidden ? 'block' : 'none';
+            icon.textContent = isHidden ? '▲' : '▼';
+        }
+    }
+    window.toggleHistory = toggleHistory;
+    
+    function getExerciseHistory(name, equipment) {
+        const history = [];
+        Object.entries(appData.history || {}).forEach(([date, workout]) => {
+            const exercise = workout.exercises?.find(ex => 
+                ex.name === name && ex.equipment === equipment
+            );
+            if (exercise && exercise.sets && exercise.sets.length > 0) {
+                history.push({
+                    date: date,
+                    sets: exercise.sets,
+                    bodyweight: workout.bodyweight || null
+                });
+            }
+        });
+        return history.sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+    
+    function updateSet(exerciseId, setIndex, field, value) {
+        const exercise = activeExercises.find(ex => ex.id === exerciseId);
+        if (exercise && exercise.sets[setIndex]) {
+            exercise.sets[setIndex][field] = value;
+            updateSummary();
+            saveActiveWorkout();
+        }
+    }
+    window.updateSet = updateSet;
+    
+    function addSet(exerciseId) {
+        const exercise = activeExercises.find(ex => ex.id === exerciseId);
+        if (exercise) {
+            const lastSet = exercise.sets[exercise.sets.length - 1];
+            exercise.sets.push({
+                weight: lastSet?.weight || '',
+                reps: lastSet?.reps || ''
+            });
+            renderExerciseList();
+            saveActiveWorkout();
+        }
+    }
+    window.addSet = addSet;
+    
+    function removeSet(exerciseId, setIndex) {
+        const exercise = activeExercises.find(ex => ex.id === exerciseId);
+        if (exercise && exercise.sets.length > 1) {
+            exercise.sets.splice(setIndex, 1);
+            renderExerciseList();
+            updateSummary();
+            saveActiveWorkout();
+        }
+    }
+    window.removeSet = removeSet;
+    
+    function removeExercise(id) {
+        if (confirm('Remove this exercise?')) {
+            activeExercises = activeExercises.filter(ex => ex.id !== id);
+            renderExerciseList();
+            updateSummary();
+            saveActiveWorkout();
+        }
+    }
+    window.removeExercise = removeExercise;
+    
+    function updateSummary() {
+        const exerciseCount = activeExercises.length;
+        const setCount = activeExercises.reduce((sum, ex) => sum + ex.sets.length, 0);
+        const currentBodyweight = parseFloat(appData.settings?.bodyWeight) || 0;
+        
+        const volume = activeExercises.reduce((sum, ex) => {
+            const exerciseData = exerciseDB[ex.name];
+            const isBodyweight = exerciseData?.isBodyweight || false;
+            
+            return sum + ex.sets.reduce((exSum, set) => {
+                const addedWeight = parseFloat(set.weight) || 0;
+                const reps = parseFloat(set.reps) || 0;
+                
+                // For bodyweight exercises, include bodyweight in calculation
+                const totalWeight = isBodyweight && currentBodyweight ? 
+                    addedWeight + currentBodyweight : 
+                    addedWeight;
+                
+                return exSum + (totalWeight * reps);
+            }, 0);
+        }, 0);
+        
+        document.getElementById('exerciseCount').textContent = exerciseCount;
+        document.getElementById('setCount').textContent = setCount;
+        document.getElementById('volumeCount').textContent = Math.round(volume);
+    }
+    
+    function finishWorkout() {
+        if (activeExercises.length === 0) {
+            alert('Add at least one exercise!');
+            return;
+        }
+        
+        const hasData = activeExercises.some(ex => 
+            ex.sets.some(s => s.weight || s.reps)
+        );
+        
+        if (!hasData) {
+            alert('Enter at least one set!');
+            return;
+        }
+        
+        // Cardio confirmation
+        if (!confirm('No cardio? Are you sure you want to leave?')) {
+            return;
+        }
+        
+        // Get current bodyweight
+        const currentBodyweight = parseFloat(appData.settings?.bodyWeight) || null;
+        
+        // Calculate workout duration
+        const durationMinutes = workoutStartTime ? Math.round((Date.now() - workoutStartTime) / 60000) : 0;
+        
+        const workout = {
+            date: new Date().toISOString(),
+            workoutId: currentWorkoutId,
+            workoutName: currentWorkoutId ? appData.workouts[currentWorkoutId]?.name : 'Custom',
+            bodyweight: currentBodyweight, // Save bodyweight with workout
+            duration: durationMinutes, // Save duration in minutes
+            exercises: activeExercises.map(ex => {
+                const exerciseData = exerciseDB[ex.name];
+                const muscles = exerciseData?.muscleGroups || (exerciseData?.muscleGroup ? [exerciseData.muscleGroup] : []);
+                const isBodyweight = exerciseData?.isBodyweight || false;
+                
+                return {
+                    name: ex.name,
+                    equipment: ex.equipment,
+                    isBodyweight: isBodyweight,
+                    sets: ex.sets.filter(s => s.weight || s.reps).map(s => ({
+                        weight: s.weight,
+                        reps: s.reps,
+                        // For bodyweight exercises, calculate total weight moved
+                        actualWeight: isBodyweight && currentBodyweight ? 
+                            (parseFloat(s.weight) || 0) + currentBodyweight : 
+                            parseFloat(s.weight) || 0
+                    })),
+                    muscleGroups: muscles
+                };
+            }).filter(ex => ex.sets.length > 0)
+        };
+        
+        appData.history[workout.date] = workout;
+        appData.activeWorkout = {};
+        saveData();
+        
+        activeExercises = [];
+        currentWorkoutId = null;
+        workoutStartTime = null; // Reset duration tracking
+        document.getElementById('exerciseList').innerHTML = '';
+        document.getElementById('workoutSelection').classList.remove('hidden');
+        document.getElementById('activeWorkoutInterface').classList.add('hidden');
+        document.getElementById('workoutSelectStart').value = '';
+        updateSummary();
+    }
+    window.finishWorkout = finishWorkout;
+    
+    // Workout management
+    function showWorkoutForm() {
+        editingWorkoutId = null;
+        document.getElementById('workoutForm').classList.remove('hidden');
+        document.getElementById('createWorkoutBtn').style.display = 'none';
+        document.getElementById('workoutsList').innerHTML = '';
+        document.getElementById('workoutName').value = '';
+        document.querySelectorAll('.muscle-checkbox').forEach(cb => cb.checked = false);
+    }
+    window.showWorkoutForm = showWorkoutForm;
+    
+    function hideWorkoutForm() {
+        document.getElementById('workoutForm').classList.add('hidden');
+        document.getElementById('createWorkoutBtn').style.display = '';
+        showWorkoutsList();
+    }
+    window.hideWorkoutForm = hideWorkoutForm;
+    
+    function saveWorkout() {
+        const name = document.getElementById('workoutName').value.trim();
+        if (!name) {
+            alert('Enter workout name');
+            return;
+        }
+        
+        const selectedMuscles = Array.from(document.querySelectorAll('.muscle-checkbox:checked'))
+            .map(cb => cb.value);
+        
+        if (selectedMuscles.length === 0) {
+            alert('Select at least one muscle group');
+            return;
+        }
+        
+        const id = editingWorkoutId || Date.now().toString();
+        appData.workouts[id] = { 
+            name: name,
+            muscleGroups: selectedMuscles
+        };
+        saveData();
+        
+        hideWorkoutForm();
+        updateWorkoutDropdowns();
+    }
+    window.saveWorkout = saveWorkout;
+    
+    function showWorkoutsList() {
+        const container = document.getElementById('workoutsList');
+        const workouts = Object.entries(appData.workouts || {});
+        
+        if (!document.getElementById('workoutForm').classList.contains('hidden')) {
+            container.innerHTML = '';
+            return;
+        }
+        
+        if (!workouts.length) {
+            container.innerHTML = '<p style="text-align: center; opacity: 0.7; margin-top: 15px;">No workouts yet.</p>';
+            return;
+        }
+        
+        let html = '<h3 style="color: #10b981; margin: 15px 0 10px;">Your Workouts</h3>';
+        workouts.forEach(([id, w]) => {
+            const muscleGroupsText = w.muscleGroups ? w.muscleGroups.join(', ') : 'No muscle groups';
+            html += `
+                <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; color: #10b981; margin-bottom: 4px;">${w.name}</div>
+                            <div style="font-size: 12px; opacity: 0.8;">${muscleGroupsText}</div>
+                        </div>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="action-btn danger" data-workout-id="${id}">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = html;
+        
+        container.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.dataset.workoutId;
+                if (confirm('Delete this workout?')) {
+                    delete appData.workouts[id];
+                    saveData();
+                    updateWorkoutDropdowns();
+                    showWorkoutsList();
+                }
+            });
+        });
+    }
+    
+    function showHistory() {
+        const container = document.getElementById('historyContent');
+        const history = Object.entries(appData.history || {})
+            .sort((a, b) => new Date(b[0]) - new Date(a[0]))
+            .slice(0, 20);
+        
+        if (!history.length) {
+            container.innerHTML = '<p>No workouts yet</p>';
+            return;
+        }
+        
+        container.innerHTML = history.map(([key, w]) => {
+            const date = new Date(key);
+            const exerciseCount = w.exercises ? w.exercises.length : 0;
+            const setCount = w.exercises ? w.exercises.reduce((sum, ex) => sum + (ex.sets?.length || 0), 0) : 0;
+            const bodyweight = w.bodyweight ? `${w.bodyweight} lbs` : 'Not recorded';
+            
+            // Calculate total volume
+            const volume = w.exercises ? w.exercises.reduce((sum, ex) => {
+                return sum + (ex.sets || []).reduce((exSum, set) => {
+                    const weight = set.actualWeight || parseFloat(set.weight) || 0;
+                    const reps = parseFloat(set.reps) || 0;
+                    return exSum + (weight * reps);
+                }, 0);
+            }, 0) : 0;
+            
+            return `
+                <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; margin-bottom: 8px;">
+                    <div style="font-weight: 600; color: #10b981; font-size: 14px;">
+                        ${exerciseCount} exercises, ${setCount} sets
+                    </div>
+                    <div style="font-size: 12px; opacity: 0.8; margin-top: 2px;">
+                        ${date.toLocaleDateString()} at ${date.toLocaleTimeString()}
+                        ${w.duration ? ` • ⏱️ ${w.duration} min` : ''}
+                    </div>
+                    <div style="font-size: 12px; margin-top: 2px; opacity: 0.7;">
+                        💪 Bodyweight: ${bodyweight} • Volume: ${Math.round(volume)} lbs
+                    </div>
+                    <div style="font-size: 12px; margin-top: 4px; opacity: 0.7;">
+                        ${w.exercises?.map(ex => ex.name).join(', ') || 'No exercises'}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    function showProgress() {
+        const content = document.getElementById('progressContent');
+        const history = Object.values(appData.history || {}).sort((a, b) => 
+            new Date(b.date) - new Date(a.date)
+        );
+        
+        if (history.length === 0) {
+            content.innerHTML = '<p style="text-align: center; opacity: 0.7;">Complete workouts to see progress!</p>';
+            return;
+        }
+        
+        // Calculate 1RM using Epley formula: weight × (1 + reps/30)
+        function calculate1RM(weight, reps) {
+            if (reps === 0 || weight === 0) return 0;
+            if (reps === 1) return weight;
+            return weight * (1 + reps / 30);
+        }
+        
+        // Collect all exercise data points with 1RM calculations
+        const exerciseData = {};
+        const muscleGroupData = {};
+        
+        history.forEach(workout => {
+            const workoutDate = new Date(workout.date);
+            
+            workout.exercises?.forEach(ex => {
+                // Initialize exercise tracking
+                if (!exerciseData[ex.name]) {
+                    exerciseData[ex.name] = {
+                        name: ex.name,
+                        isBodyweight: ex.isBodyweight,
+                        muscleGroups: ex.muscleGroups || [],
+                        dataPoints: []
+                    };
+                }
+                
+                // Find best set (highest 1RM) in this workout for this exercise
+                let best1RM = 0;
+                let bestWeight = 0;
+                let bestReps = 0;
+                
+                ex.sets?.forEach(set => {
+                    const weight = parseFloat(set.actualWeight || set.weight || 0);
+                    const reps = parseFloat(set.reps || 0);
+                    const estimated1RM = calculate1RM(weight, reps);
+                    
+                    if (estimated1RM > best1RM) {
+                        best1RM = estimated1RM;
+                        bestWeight = weight;
+                        bestReps = reps;
+                    }
+                });
+                
+                if (best1RM > 0) {
+                    exerciseData[ex.name].dataPoints.push({
+                        date: workoutDate,
+                        oneRM: best1RM,
+                        weight: bestWeight,
+                        reps: bestReps
+                    });
+                    
+                    // Add to muscle group data
+                    (ex.muscleGroups || []).forEach(muscle => {
+                        if (!muscleGroupData[muscle]) {
+                            muscleGroupData[muscle] = [];
+                        }
+                        muscleGroupData[muscle].push({
+                            exercise: ex.name,
+                            date: workoutDate,
+                            oneRM: best1RM,
+                            isBodyweight: ex.isBodyweight
+                        });
+                    });
+                }
+            });
+        });
+        
+        // Calculate overall stats
+        const totalWorkouts = history.length;
+        const totalSets = history.reduce((sum, w) => {
+            return sum + (w.exercises?.reduce((exSum, ex) => exSum + (ex.sets?.length || 0), 0) || 0);
+        }, 0);
+        
+        // Calculate average workout duration
+        const workoutsWithDuration = history.filter(w => w.duration > 0);
+        const avgDuration = workoutsWithDuration.length > 0 
+            ? Math.round(workoutsWithDuration.reduce((sum, w) => sum + w.duration, 0) / workoutsWithDuration.length)
+            : 0;
+        
+        // Calculate workout frequency (last 30 days)
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        const recentWorkouts = history.filter(w => new Date(w.date) >= thirtyDaysAgo);
+        const workoutsPerWeek = (recentWorkouts.length / 30 * 7).toFixed(1);
+        
+        // Sort exercises by most frequently performed
+        const sortedExercises = Object.values(exerciseData)
+            .filter(ex => ex.dataPoints.length > 0)
+            .sort((a, b) => b.dataPoints.length - a.dataPoints.length);
+        
+        // Generate muscle group scatterplots
+        const muscleGroupCharts = Object.entries(muscleGroupData)
+            .sort(([a], [b]) => a.localeCompare(b))
+            .map(([muscle, exercises]) => {
+                // Group by exercise name
+                const exercisesByName = {};
+                exercises.forEach(ex => {
+                    if (!exercisesByName[ex.exercise]) {
+                        exercisesByName[ex.exercise] = [];
+                    }
+                    exercisesByName[ex.exercise].push(ex);
+                });
+                
+                // Sort each exercise's data points by date
+                Object.values(exercisesByName).forEach(points => {
+                    points.sort((a, b) => a.date - b.date);
+                });
+                
+                // Find min/max dates for X axis
+                const allDates = exercises.map(e => e.date.getTime());
+                const minDate = Math.min(...allDates);
+                const maxDate = Math.max(...allDates);
+                const dateRange = maxDate - minDate || 1;
+                
+                // Find min/max 1RM for Y axis
+                const all1RMs = exercises.map(e => e.oneRM);
+                const min1RM = Math.min(...all1RMs);
+                const max1RM = Math.max(...all1RMs);
+                const rmRange = max1RM - min1RM || 1;
+                
+                // Generate unique color for each exercise
+                const colors = ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
+                const exerciseColors = {};
+                Object.keys(exercisesByName).forEach((name, idx) => {
+                    exerciseColors[name] = colors[idx % colors.length];
+                });
+                
+                return `
+                    <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                        <h5 style="color: #10b981; margin-bottom: 10px; font-size: 14px;">💪 ${muscle}</h5>
+                        
+                        <!-- SVG Scatterplot -->
+                        <svg width="100%" height="200" viewBox="0 0 400 200" style="background: rgba(0,0,0,0.2); border-radius: 6px;">
+                            <!-- Grid lines -->
+                            ${[0, 25, 50, 75, 100].map(pct => `
+                                <line x1="40" y1="${180 - (pct * 1.4)}" x2="390" y2="${180 - (pct * 1.4)}" 
+                                      stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                            `).join('')}
+                            
+                            <!-- Y axis labels -->
+                            ${[0, 25, 50, 75, 100].map(pct => {
+                                const value = min1RM + (rmRange * pct / 100);
+                                return `
+                                    <text x="35" y="${185 - (pct * 1.4)}" fill="rgba(255,255,255,0.5)" 
+                                          font-size="10" text-anchor="end">${Math.round(value)}</text>
+                                `;
+                            }).join('')}
+                            
+                            <!-- Data points and lines -->
+                            ${Object.entries(exercisesByName).map(([exName, points]) => {
+                                const color = exerciseColors[exName];
+                                const pointsData = points.map(point => {
+                                    const x = 40 + ((point.date.getTime() - minDate) / dateRange) * 350;
+                                    const y = 180 - ((point.oneRM - min1RM) / rmRange) * 140;
+                                    return { x, y, oneRM: point.oneRM };
+                                });
+                                
+                                // Draw connecting lines
+                                const lineSegments = pointsData.slice(0, -1).map((point, idx) => {
+                                    const next = pointsData[idx + 1];
+                                    return `<line x1="${point.x}" y1="${point.y}" x2="${next.x}" y2="${next.y}" 
+                                                  stroke="${color}" stroke-width="2" opacity="0.6"/>`;
+                                }).join('');
+                                
+                                // Draw points
+                                const circles = pointsData.map(point => 
+                                    `<circle cx="${point.x}" cy="${point.y}" r="4" fill="${color}">
+                                        <title>${exName}: ${Math.round(point.oneRM)} lbs (est. 1RM)</title>
+                                    </circle>`
+                                ).join('');
+                                
+                                return lineSegments + circles;
+                            }).join('')}
+                            
+                            <!-- Axes -->
+                            <line x1="40" y1="180" x2="390" y2="180" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+                            <line x1="40" y1="40" x2="40" y2="180" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+                            
+                            <!-- Axis labels -->
+                            <text x="215" y="198" fill="rgba(255,255,255,0.5)" font-size="11" text-anchor="middle">Time →</text>
+                            <text x="15" y="110" fill="rgba(255,255,255,0.5)" font-size="11" text-anchor="middle" 
+                                  transform="rotate(-90, 15, 110)">Est. 1RM (lbs)</text>
+                        </svg>
+                        
+                        <!-- Legend -->
+                        <div style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px;">
+                            ${Object.entries(exercisesByName).map(([exName, points]) => {
+                                const color = exerciseColors[exName];
+                                const first1RM = points[0].oneRM;
+                                const last1RM = points[points.length - 1].oneRM;
+                                const change = last1RM - first1RM;
+                                const changePercent = ((change / first1RM) * 100).toFixed(0);
+                                
+                                return `
+                                    <div style="display: flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 12px;">
+                                        <div style="width: 8px; height: 8px; border-radius: 50%; background: ${color};"></div>
+                                        <span>${exName}</span>
+                                        ${points.length > 1 ? `
+                                            <span style="color: ${change >= 0 ? '#10b981' : '#ef4444'}; font-weight: 600;">
+                                                ${change >= 0 ? '+' : ''}${changePercent}%
+                                            </span>
+                                        ` : ''}
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        
+        content.innerHTML = `
+            <!-- Overall Stats -->
+            <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+                <h4 style="color: #10b981; margin-bottom: 10px; font-size: 15px;">📊 Overall Stats</h4>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">${totalWorkouts}</div>
+                        <div style="font-size: 11px; opacity: 0.8;">Total Workouts</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">${totalSets}</div>
+                        <div style="font-size: 11px; opacity: 0.8;">Total Sets</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">${workoutsPerWeek}</div>
+                        <div style="font-size: 11px; opacity: 0.8;">Workouts/Week (30d)</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">${avgDuration || '-'}</div>
+                        <div style="font-size: 11px; opacity: 0.8;">Avg Duration (min)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Exercise Personal Records -->
+            <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+                <h4 style="color: #3b82f6; margin-bottom: 10px; font-size: 15px;">💪 Personal Records (Estimated 1RM)</h4>
+                <div style="max-height: 400px; overflow-y: auto;">
+                    ${sortedExercises.slice(0, 10).map(ex => {
+                        const sortedPoints = ex.dataPoints.sort((a, b) => b.date - a.date);
+                        const latest = sortedPoints[0];
+                        const oldest = sortedPoints[sortedPoints.length - 1];
+                        const max1RM = Math.max(...ex.dataPoints.map(p => p.oneRM));
+                        const change1RM = latest.oneRM - oldest.oneRM;
+                        const changePercent = ((change1RM / oldest.oneRM) * 100).toFixed(0);
+                        const trend = change1RM > 0 ? '📈' : change1RM < 0 ? '📉' : '➡️';
+                        
+                        return `
+                            <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px; margin-bottom: 8px;">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 6px;">
+                                    <div>
+                                        <div style="font-weight: 600; color: #3b82f6; font-size: 13px;">${ex.name}</div>
+                                        <div style="font-size: 11px; opacity: 0.7;">Performed ${ex.dataPoints.length} time${ex.dataPoints.length > 1 ? 's' : ''}</div>
+                                    </div>
+                                    <div style="font-size: 18px;">${trend}</div>
+                                </div>
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; font-size: 12px;">
+                                    <div>
+                                        <div style="opacity: 0.7;">Max 1RM</div>
+                                        <div style="font-weight: 600; color: #10b981;">${Math.round(max1RM)} lbs</div>
+                                    </div>
+                                    <div>
+                                        <div style="opacity: 0.7;">Latest</div>
+                                        <div style="font-weight: 600;">${Math.round(latest.weight)}×${latest.reps}</div>
+                                    </div>
+                                    ${ex.dataPoints.length > 1 ? `
+                                    <div>
+                                        <div style="opacity: 0.7;">Progress</div>
+                                        <div style="font-weight: 600; color: ${change1RM >= 0 ? '#10b981' : '#ef4444'};">
+                                            ${change1RM >= 0 ? '+' : ''}${changePercent}%
+                                        </div>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+            
+            <!-- Muscle Group Progress Charts -->
+            <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+                <h4 style="color: #f59e0b; margin-bottom: 10px; font-size: 15px;">📈 Strength Progress by Muscle Group</h4>
+                <div style="font-size: 11px; opacity: 0.7; margin-bottom: 10px; font-style: italic;">
+                    Using Epley formula to estimate 1RM from your best set each workout. Hover over points to see details.
+                </div>
+                ${muscleGroupCharts}
+            </div>
+        `;
+    }
+    
+    // Custom Exercise Management
+    let editingCustomExerciseId = null;
+    let allEquipmentOptions = [];
+    
+    // Exercise name autocomplete functions
+    function showExerciseNameDropdown() {
+        filterExerciseNames();
+    }
+    window.showExerciseNameDropdown = showExerciseNameDropdown;
+    
+    function filterExerciseNames() {
+        const input = document.getElementById('customExerciseName');
+        const dropdown = document.getElementById('exerciseNameDropdown');
+        const searchTerm = input.value.toLowerCase().trim();
+        
+        // Get all existing exercise names
+        const existingNames = Object.keys(exerciseDB).sort();
+        
+        // Filter by search term
+        const filtered = existingNames.filter(name => 
+            name.toLowerCase().includes(searchTerm)
+        );
+        
+        // Don't show dropdown if empty search, no results, or exact match
+        if (!searchTerm || filtered.length === 0 || 
+            (filtered.length === 1 && filtered[0].toLowerCase() === searchTerm)) {
+            dropdown.classList.add('hidden');
+            return;
+        }
+        
+        // Show matching exercises with warning styling
+        dropdown.innerHTML = filtered.slice(0, 10).map(name => {
+            const isCustom = exerciseDB[name].isCustom;
+            const badge = isCustom ? '<span style="font-size: 10px; padding: 2px 6px; border-radius: 10px; background: rgba(59, 130, 246, 0.3); color: #93c5fd; margin-left: 6px;">Custom</span>' : '';
+            
+            return `
+                <div style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #fca5a5;">⚠️ Already exists: ${name}${badge}</span>
+                    </div>
+                    <div style="font-size: 11px; opacity: 0.7; margin-top: 2px;">
+                        ${exerciseDB[name].muscleGroups?.join(', ') || 'No muscle groups'}
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+        dropdown.classList.remove('hidden');
+    }
+    window.filterExerciseNames = filterExerciseNames;
+    
+    // Equipment dropdown functions
+    function initializeEquipmentOptions() {
+        // Get all unique equipment from exerciseDB
+        const equipmentSet = new Set();
+        Object.values(exerciseDB).forEach(ex => {
+            if (ex.equipmentVariations) {
+                ex.equipmentVariations.forEach(eq => equipmentSet.add(eq));
+            }
+        });
+        allEquipmentOptions = Array.from(equipmentSet).sort();
+    }
+    
+    function showEquipmentDropdown() {
+        if (allEquipmentOptions.length === 0) {
+            initializeEquipmentOptions();
+        }
+        filterEquipmentOptions();
+    }
+    window.showEquipmentDropdown = showEquipmentDropdown;
+    
+    function filterEquipmentOptions() {
+        const input = document.getElementById('customExerciseEquipment');
+        const dropdown = document.getElementById('equipmentDropdown');
+        const searchTerm = input.value.toLowerCase();
+        
+        const filtered = allEquipmentOptions.filter(eq => 
+            eq.toLowerCase().includes(searchTerm)
+        );
+        
+        if (filtered.length === 0 || (searchTerm && filtered.length === 1 && filtered[0].toLowerCase() === searchTerm)) {
+            dropdown.classList.add('hidden');
+            return;
+        }
+        
+        dropdown.innerHTML = filtered.slice(0, 10).map(eq => `
+            <div onclick="selectEquipment('${eq.replace(/'/g, "\\'")}'); event.stopPropagation();" 
+                 style="padding: 10px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.1);"
+                 onmouseover="this.style.background='rgba(255,255,255,0.1)'"
+                 onmouseout="this.style.background='transparent'">
+                ${eq}
+            </div>
+        `).join('');
+        
+        dropdown.classList.remove('hidden');
+    }
+    window.filterEquipmentOptions = filterEquipmentOptions;
+    
+    function selectEquipment(equipment) {
+        document.getElementById('customExerciseEquipment').value = equipment;
+        document.getElementById('equipmentDropdown').classList.add('hidden');
+    }
+    window.selectEquipment = selectEquipment;
+    
+    // Hide dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+        const equipmentDropdown = document.getElementById('equipmentDropdown');
+        const equipmentInput = document.getElementById('customExerciseEquipment');
+        if (equipmentDropdown && equipmentInput && e.target !== equipmentInput && !equipmentDropdown.contains(e.target)) {
+            equipmentDropdown.classList.add('hidden');
+        }
+        
+        const nameDropdown = document.getElementById('exerciseNameDropdown');
+        const nameInput = document.getElementById('customExerciseName');
+        if (nameDropdown && nameInput && e.target !== nameInput && !nameDropdown.contains(e.target)) {
+            nameDropdown.classList.add('hidden');
+        }
+    });
+    
+    function showCustomExerciseManager() {
+        document.getElementById('customExerciseModal').classList.remove('hidden');
+        document.getElementById('customExerciseForm').classList.add('hidden');
+        editingCustomExerciseId = null;
+        renderCustomExercisesList();
+    }
+    window.showCustomExerciseManager = showCustomExerciseManager;
+    
+    function hideCustomExerciseManager() {
+        document.getElementById('customExerciseModal').classList.add('hidden');
+        document.getElementById('customExerciseForm').classList.add('hidden');
+        editingCustomExerciseId = null;
+    }
+    window.hideCustomExerciseManager = hideCustomExerciseManager;
+    
+    function showCreateCustomExercise() {
+        // Open the modal first
+        document.getElementById('customExerciseModal').classList.remove('hidden');
+        
+        editingCustomExerciseId = null;
+        document.getElementById('customFormTitle').textContent = 'Create Custom Exercise';
+        document.getElementById('customExerciseForm').classList.remove('hidden');
+        
+        // Hide the custom exercises list while creating
+        document.getElementById('customExercisesList').classList.add('hidden');
+        
+        // Clear form
+        document.getElementById('customExerciseName').value = '';
+        document.getElementById('customExerciseEquipment').value = '';
+        document.getElementById('customExerciseDescription').value = '';
+        document.getElementById('customExerciseDifficulty').value = 'beginner';
+        document.getElementById('customExerciseIsBodyweight').checked = false;
+        document.querySelectorAll('.custom-muscle-checkbox').forEach(cb => cb.checked = false);
+        
+        // Hide dropdowns
+        document.getElementById('exerciseNameDropdown').classList.add('hidden');
+        document.getElementById('equipmentDropdown').classList.add('hidden');
+    }
+    window.showCreateCustomExercise = showCreateCustomExercise;
+    
+    function editCustomExercise(exerciseName) {
+        const exercise = appData.customExercises[exerciseName];
+        if (!exercise) return;
+        
+        editingCustomExerciseId = exerciseName;
+        document.getElementById('customFormTitle').textContent = 'Edit Custom Exercise';
+        document.getElementById('customExerciseForm').classList.remove('hidden');
+        
+        // Hide the custom exercises list while editing
+        document.getElementById('customExercisesList').classList.add('hidden');
+        
+        // Fill form with existing data
+        document.getElementById('customExerciseName').value = exerciseName;
+        document.getElementById('customExerciseEquipment').value = exercise.equipment || '';
+        document.getElementById('customExerciseDescription').value = exercise.description || '';
+        document.getElementById('customExerciseDifficulty').value = exercise.difficulty || 'beginner';
+        document.getElementById('customExerciseIsBodyweight').checked = exercise.isBodyweight || false;
+        
+        // Set muscle groups
+        document.querySelectorAll('.custom-muscle-checkbox').forEach(cb => {
+            cb.checked = (exercise.muscleGroups || []).includes(cb.value);
+        });
+    }
+    window.editCustomExercise = editCustomExercise;
+    
+    function saveCustomExercise() {
+        const name = document.getElementById('customExerciseName').value.trim();
+        const equipment = document.getElementById('customExerciseEquipment').value.trim();
+        const description = document.getElementById('customExerciseDescription').value.trim();
+        const difficulty = document.getElementById('customExerciseDifficulty').value;
+        const isBodyweight = document.getElementById('customExerciseIsBodyweight').checked;
+        
+        if (!name) {
+            alert('Please enter an exercise name!');
+            return;
+        }
+        
+        if (!equipment) {
+            alert('Please enter equipment needed!');
+            return;
+        }
+        
+        const selectedMuscles = Array.from(document.querySelectorAll('.custom-muscle-checkbox:checked'))
+            .map(cb => cb.value);
+        
+        if (selectedMuscles.length === 0) {
+            alert('Please select at least one muscle group!');
+            return;
+        }
+        
+        // Check if renaming and name already exists
+        if (editingCustomExerciseId && editingCustomExerciseId !== name) {
+            if (exerciseDB[name]) {
+                alert('An exercise with this name already exists!');
+                return;
+            }
+            // Delete old entry
+            delete appData.customExercises[editingCustomExerciseId];
+            delete exerciseDB[editingCustomExerciseId];
+        } else if (!editingCustomExerciseId && exerciseDB[name]) {
+            alert('An exercise with this name already exists!');
+            return;
+        }
+        
+        const exercise = {
+            muscleGroups: selectedMuscles,
+            muscleGroup: selectedMuscles[0], // For compatibility
+            equipment: equipment,
+            description: description,
+            difficulty: difficulty,
+            isBodyweight: isBodyweight,
+            isCustom: true,
+            equipmentVariations: [equipment]
+        };
+        
+        appData.customExercises[name] = exercise;
+        exerciseDB[name] = exercise;
+        saveData();
+        
+        document.getElementById('customExerciseForm').classList.add('hidden');
+        document.getElementById('customExercisesList').classList.remove('hidden');
+        renderCustomExercisesList();
+        
+        // Refresh the exercise search if we're on the workout tab
+        if (!document.getElementById('workoutTab').classList.contains('hidden')) {
+            searchExercises();
+        }
+    }
+    window.saveCustomExercise = saveCustomExercise;
+    
+    function cancelCustomExerciseForm() {
+        document.getElementById('customExerciseForm').classList.add('hidden');
+        document.getElementById('customExercisesList').classList.remove('hidden');
+        editingCustomExerciseId = null;
+    }
+    window.cancelCustomExerciseForm = cancelCustomExerciseForm;
+    
+    function deleteCustomExercise(exerciseName) {
+        if (!confirm(`Delete "${exerciseName}"? This cannot be undone.`)) return;
+        
+        delete appData.customExercises[exerciseName];
+        delete exerciseDB[exerciseName];
+        saveData();
+        
+        renderCustomExercisesList();
+        
+        // Refresh the exercise search if we're on the workout tab
+        if (!document.getElementById('workoutTab').classList.contains('hidden')) {
+            searchExercises();
+        }
+    }
+    window.deleteCustomExercise = deleteCustomExercise;
+    
+    function renderCustomExercisesList() {
+        const container = document.getElementById('customExercisesList');
+        const customExercises = Object.entries(appData.customExercises || {});
+        
+        if (customExercises.length === 0) {
+            container.innerHTML = '<p style="text-align: center; opacity: 0.7; margin: 15px 0;">No custom exercises yet. Create your first one!</p>';
+            return;
+        }
+        
+        container.innerHTML = '<h3 style="color: #10b981; margin-bottom: 10px; font-size: 16px;">Your Custom Exercises</h3>' +
+            customExercises.map(([name, ex]) => {
+                const muscleText = ex.muscleGroups ? ex.muscleGroups.join(', ') : 'No muscle groups';
+                const difficultyColor = {
+                    'beginner': '#10b981',
+                    'intermediate': '#f59e0b',
+                    'advanced': '#ef4444'
+                }[ex.difficulty] || '#6b7280';
+                
+                return `
+                    <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; margin-bottom: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 6px;">
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; color: #10b981; margin-bottom: 4px;">
+                                    ${name}
+                                    <span style="font-size: 10px; padding: 2px 6px; border-radius: 10px; background: rgba(255,255,255,0.1); color: ${difficultyColor}; margin-left: 6px;">
+                                        ${ex.difficulty}
+                                    </span>
+                                    ${ex.isBodyweight ? '<span style="font-size: 10px; padding: 2px 6px; border-radius: 10px; background: rgba(16, 185, 129, 0.2); color: #10b981; margin-left: 6px;">Bodyweight</span>' : ''}
+                                </div>
+                                <div style="font-size: 12px; opacity: 0.8; margin-bottom: 2px;">
+                                    🔧 ${ex.equipment}
+                                </div>
+                                <div style="font-size: 12px; opacity: 0.7;">
+                                    💪 ${muscleText}
+                                </div>
+                                ${ex.description ? `<div style="font-size: 11px; opacity: 0.6; margin-top: 4px; font-style: italic;">${ex.description}</div>` : ''}
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 6px; margin-top: 8px;">
+                            <button class="action-btn primary" onclick="editCustomExercise('${name.replace(/'/g, "\\'")}')">Edit</button>
+                            <button class="action-btn danger" onclick="deleteCustomExercise('${name.replace(/'/g, "\\'")}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+    }
+    
+    function showSettings() {
+        const content = document.getElementById('settingsContent');
+        const currentBW = appData.settings?.bodyWeight || '';
+        
+        content.innerHTML = `
+            <h3 style="color: #10b981; margin-bottom: 10px;">Body Weight</h3>
+            <div style="background: rgba(16, 185, 129, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 12px;">
+                <strong>💡 Important:</strong> Your bodyweight is saved with each workout for accurate tracking of bodyweight exercises like pull-ups, push-ups, and dips. Update this when your weight changes!
+            </div>
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <input type="number" id="bw" placeholder="Weight (lbs)" class="exercise-input" 
+                       style="max-width: 150px; margin: 0;" value="${currentBW}" step="0.1">
+                <button class="action-btn success" id="saveBwBtn">Save</button>
+            </div>
+            ${currentBW ? `<div style="font-size: 12px; opacity: 0.7; margin-bottom: 20px;">Current: ${currentBW} lbs</div>` : ''}
+            
+            <h3 style="color: #10b981; margin-bottom: 10px;">Data Management</h3>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="action-btn primary" id="exportBtn">Export</button>
+                <button class="action-btn primary" id="importBtn">Import</button>
+                <button class="action-btn danger" id="clearBtn">Clear All</button>
+            </div>
+            <input type="file" id="importFile" accept=".json" style="display: none;">
+        `;
+        
+        document.getElementById('saveBwBtn').addEventListener('click', () => {
+            const newBW = document.getElementById('bw').value;
+            if (!newBW || parseFloat(newBW) <= 0) {
+                alert('Please enter a valid bodyweight!');
+                return;
+            }
+            if (!appData.settings) appData.settings = {};
+            appData.settings.bodyWeight = newBW;
+            saveData();
+            showSettings(); // Refresh to show current weight
+        });
+        
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            const dataStr = JSON.stringify(appData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `jim-tracker-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+        
+        document.getElementById('importBtn').addEventListener('click', () => {
+            document.getElementById('importFile').click();
+        });
+        
+        document.getElementById('importFile').addEventListener('change', function() {
+            const file = this.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (confirm('Replace all data?')) {
+                        appData = imported;
+                        saveData();
+                        location.reload();
+                    }
+                } catch (error) {
+                    alert('Import failed');
+                }
+            };
+            reader.readAsText(file);
+            this.value = '';
+        });
+        
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            if (confirm('Delete ALL data?\n\nThis includes workouts, history, and custom exercises.')) {
+                const keepCustom = confirm('Keep your custom exercises?\n\n- Click OK to keep custom exercises\n- Click Cancel to delete everything');
+                
+                if (keepCustom) {
+                    const savedCustom = appData.customExercises;
+                    const savedBW = appData.settings?.bodyWeight;
+                    appData = { workouts: {}, history: {}, settings: {}, activeWorkout: {}, customExercises: savedCustom };
+                    if (savedBW) appData.settings.bodyWeight = savedBW;
+                } else {
+                    appData = { workouts: {}, history: {}, settings: {}, activeWorkout: {}, customExercises: {} };
+                }
+                
+                saveData();
+                location.reload();
+            }
+        });
+    }
+    
+    // Start the app
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+    </script>
+</body>
+</html>
